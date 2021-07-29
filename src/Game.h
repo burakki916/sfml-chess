@@ -20,6 +20,7 @@ public:
 	Window* GetWindow();
 	sf::Time GetElapsed();
 	void RestartClock(); 
+	void outPutMouseCords(EventDetails* l_details); 
 private:
 	Window m_window;
 	sf::Vector2f m_increment;

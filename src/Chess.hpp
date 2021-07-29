@@ -14,7 +14,6 @@ class Chess
 		std::pair<sf::Color,sf::Color> tilesColors;
 		Window* m_window; 
 	public:
-
 		Chess(Window* l_window);
 		void Render(Window* l_window);
 		~Chess();

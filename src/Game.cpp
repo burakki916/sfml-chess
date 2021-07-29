@@ -3,6 +3,7 @@ Game::Game() :
 	m_window("SFML Window", sf::Vector2u(720,720 )), myBoard(&m_window)
 {
 	RestartClock();
+	m_window.GetEventManager()->AddCallback("MousePos",&Game::outPutMouseCords,this);
 }
 Game::~Game() {}
 
@@ -19,7 +20,6 @@ void Game::Update()
 	if (m_elapsed > sf::seconds(5)) {
 		
 	}
-
 }
 
 void Game::Render()
@@ -42,4 +42,8 @@ sf::Time Game::GetElapsed()
 void Game::RestartClock()
 {
 	m_elapsed = m_clock.restart(); 
+}
+
+void Game::outPutMouseCords(EventDetails* l_details) {
+	std::cout << "(" << l_details->m_mouse.x << "," << l_details->m_mouse.y << ")" << std::endl;
 }
