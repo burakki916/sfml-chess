@@ -1,4 +1,4 @@
-#include "EventManager.h"
+#include "EventManager.hpp"
 
 EventManager::EventManager() : m_hasFocus(true) { LoadBindings(); }
 
@@ -109,6 +109,8 @@ void EventManager::Update()
 					bind->c++; 
 				}
 				break; 
+			default : 
+				break;
 			}
 		}
 		if (bind->m_events.size() == bind->c) {
@@ -142,7 +144,7 @@ void EventManager::LoadBindings()
 			std::string keyval; 
 			keystream >> keyval; // puts the next "word" into the keyval. ex say the line is Move 9:0, it would be inputing 9:0 into the keyval string 
 			int start = 0; 
-			int end = keyval.find(delimiter);
+			auto end = keyval.find(delimiter);
 			if (end == std::string::npos) {
 				delete bind; //deallocates bind from the heap 
 				bind = nullptr;

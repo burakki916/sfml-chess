@@ -55,17 +55,19 @@ struct EventDetails {
 
 }; 
 struct Binding {
+	std::string m_name; 
+	EventDetails m_details;
+	int c; // count of events that are happening  
+	Events m_events;   // using Events = std::vector<std::pair<EventType, EventInfo>>;	
+	
 	Binding(const std::string& l_name)
 		: m_name(l_name), m_details(l_name), c(0) {}
+
 	void BindEvent(EventType l_type, EventInfo l_info = EventInfo())
 	{
 		m_events.emplace_back(l_type, l_info);
 	}
-	Events m_events;   // using Events = std::vector<std::pair<EventType, EventInfo>>;
-	std::string m_name; 
-	int c; // count of events that are happening 
 
-	EventDetails m_details; 
 };
 using Bindings = std::unordered_map<std::string, Binding*>;
 using callBacks = std::unordered_map<std::string, std::function<void(EventDetails*)>>; 

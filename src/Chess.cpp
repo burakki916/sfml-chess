@@ -18,7 +18,7 @@ Chess::~Chess()
 
 void Chess::Render(Window* l_window) {
     //make this work later or smth, kept getting a squiggle i didnt understand. 
-    for(const auto cur : Tiles ){
+    for(const auto& cur : Tiles ){
         for(auto curTile : cur )
         l_window->Draw(curTile); 
     } // 
