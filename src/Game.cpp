@@ -9,7 +9,7 @@ Game::~Game() {}
 
 void Game::handleInput()
 {
-
+	
 }
 
 void Game::Update()

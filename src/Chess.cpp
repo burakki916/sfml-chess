@@ -3,8 +3,12 @@
 Chess::Chess(Window* l_window)
     : m_window(l_window)
 {
-    tilesColors = std::make_pair(sf::Color::Red, sf::Color::Blue);
+    tilesColors = std::make_pair(sf::Color(130,73,11), sf::Color(212, 187, 0));
     m_window->GetEventManager()->AddCallback("MousePos",&Chess::highlightBox,this);
+    if(!woodTexture.loadFromFile("src/mcWood.jpg")){
+        woodTexture.loadFromFile("src/mcWood.jpg");
+        std::cout << "ERROR: Can't find texture : \"mcWood.jpg\""<<std::endl;
+    }
     TilesSetUp(); 
 }
 	
@@ -38,6 +42,7 @@ void Chess::TilesSetUp() {
             }
             tempRec.setSize(tileDemensions);
             tempRec.setPosition(rows*tileDemensions.x,coloumns*tileDemensions.y);
+            tempRec.setTexture(&woodTexture);
             tempRow.push_back(tempRec);
         }
         Tiles.push_back(tempRow); 
@@ -49,8 +54,8 @@ void Chess::highlightBox(EventDetails* l_details) {
         sf::Vector2f highLightPos; 
         highLightPos.x = (ceil(((float)l_details->m_mouse.x / (float)m_window->GetWindowSize()->x)*8)-1) * tileDemensions.x;
         highLightPos.y = (ceil(((float)l_details->m_mouse.y / (float)m_window->GetWindowSize()->y)*8)-1) * tileDemensions.y;
-        std::cout << "x : " <<highLightPos.x  << std::endl; 
-        std::cout << "y : " << highLightPos.y << std::endl; 
+        std::cout << "x: " <<highLightPos.x  << std::endl; 
+        std::cout << "y: " << highLightPos.y << std::endl; 
         highlightedCube.setSize(tileDemensions);
         highlightedCube.setFillColor(sf::Color::Black);
         highlightedCube.setPosition(highLightPos);

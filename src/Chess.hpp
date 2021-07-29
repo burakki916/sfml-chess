@@ -14,6 +14,8 @@ class Chess
 		Window* m_window;
 		void highlightBox(EventDetails* l_details);
 		sf::RectangleShape highlightedCube; 
+		sf::Texture woodTexture; 
+
 	public:
 		Chess(Window* l_window);
 		void Render(Window* l_window);
