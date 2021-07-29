@@ -6,9 +6,6 @@
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 #include "EventManager.h"
-# define M_PI           3.14159265358979323846  /* pi */
-# define M_G			9.8
-
 class Window
 {
 public:
