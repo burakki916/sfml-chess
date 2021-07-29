@@ -1,4 +1,4 @@
-#include "EventManager.h"
+#include "EventManager.hpp"
 
 EventManager::EventManager() : m_hasFocus(true) { LoadBindings(); }
 

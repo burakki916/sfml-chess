@@ -1,13 +1,13 @@
 #pragma once
+#include <SFML/Audio.hpp>
+#include <SFML/Graphics.hpp>
 #include <ctime>
 #include <stdio.h>      
 #include <stdlib.h>    
 #include <time.h>   
 #include <string>
-#include <SFML/Audio.hpp>
-#include <SFML/Graphics.hpp>
-#include "Window.h"
 #include <cmath>
+#include "Window.hpp"
 #include "Chess.hpp"
 class Game
 {

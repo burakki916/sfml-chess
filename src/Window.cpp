@@ -1,4 +1,4 @@
-#include "Window.h"
+#include "Window.hpp"
 
 Window::Window() {
 	Setup("THE EPIC WINDOW", sf::Vector2u(640, 480));

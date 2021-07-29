@@ -3,7 +3,7 @@
 #pragma once
 #include <vector>
 #include <utility>
-#include "Window.h"
+#include "Window.hpp"
 class Chess  
 {
 	private:
