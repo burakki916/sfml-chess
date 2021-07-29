@@ -3,7 +3,7 @@ Game::Game() :
 	m_window("SFML Window", sf::Vector2u(720,720 )), myBoard(&m_window)
 {
 	RestartClock();
-	m_window.GetEventManager()->AddCallback("MousePos",&Game::outPutMouseCords,this);
+	
 }
 Game::~Game() {}
 
