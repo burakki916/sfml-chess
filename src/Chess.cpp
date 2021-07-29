@@ -5,7 +5,7 @@ Chess::Chess(Window* l_window)
 {
     tilesColors = std::make_pair(sf::Color(130,73,11), sf::Color(212, 187, 0));
     m_window->GetEventManager()->AddCallback("MousePos",&Chess::highlightBox,this);
-    if(!woodTexture.loadFromFile("resources/textures/mcWood")){
+    if(!woodTexture.loadFromFile("resources/textures/mcWood.jpg")){
         std::cout << "ERROR: Can't find texture : \"mcWood.jpg\""<<std::endl;
     }
     TilesSetUp(); 

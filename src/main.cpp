@@ -1,7 +1,6 @@
 #include <iostream>
 #include "Game.h"
 
-// yo
 int main() {
     Game newGame;
     while(!newGame.GetWindow()->IsDone()){
