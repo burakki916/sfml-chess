@@ -1,7 +1,7 @@
 #include <iostream>
-#include "Window.hpp"
+
 #include "ChessScreen.hpp"
-#include "EventManager.hpp"
+#include "Window.hpp"
 
 sf::Texture ChessScreen::woodTexture;
 sf::RectangleShape ChessScreen::tileContainer[8][8];

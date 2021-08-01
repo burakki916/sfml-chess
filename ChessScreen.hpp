@@ -1,4 +1,6 @@
 #pragma once
+#include "EventManager.hpp"
+#include <SFML/Graphics.hpp>
 
 class ChessScreen {
 	public:

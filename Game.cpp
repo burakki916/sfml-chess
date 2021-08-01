@@ -2,10 +2,13 @@
 #include "Window.hpp"
 #include "ChessScreen.hpp"
 #include "EventManager.hpp"
+#include "ScreenManager.hpp"
 
 void Game::initialize() {
 	Window::initialize();
 	ChessScreen::initialize();
+
+	ScreenManager::setCurrentScreen("ChessScreen");
 }
 
 void Game::run() {
@@ -15,6 +18,6 @@ void Game::run() {
 
 void Game::render() {
 	Window::beginDraw();
-	ChessScreen::render();
+	ScreenManager::renderScreen();
 	Window::endDraw();
 }
