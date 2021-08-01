@@ -1,4 +1,3 @@
-#pragma once
 #include "Window.hpp"
 #include "EventManager.hpp"
 using namespace std;

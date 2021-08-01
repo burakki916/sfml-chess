@@ -1,4 +1,3 @@
-#pragma once
 #include <iostream>
 #include "Window.hpp"
 #include "ChessScreen.hpp"
