@@ -51,21 +51,23 @@ void ChessScreen::setupTiles() {
 }
 
 void ChessScreen::highlightTile(EventInfo *info) {
-    sf::Vector2i mousePos = Window::getMousePosition();
-    
-    sf::Vector2u windowSize = Window::getSize();
-    sf::Vector2f tileSize(windowSize.x / 8, windowSize.y / 8);
+    if (info->mouseButton.button == sf::Mouse::Left) {
+        sf::Vector2i mousePos {info->mouseButton.x, info->mouseButton.y};
 
-    int row = mousePos.y / tileSize.y;
-    int column = mousePos.x / tileSize.x;
+        sf::Vector2u windowSize = Window::getSize();
+        sf::Vector2f tileSize(windowSize.x / 8, windowSize.y / 8);
 
-    if (row >= 0 && row <= 8 && column >= 0 && column <= 8) {
-        if (selectedTile != NULL) {
-            selectedTile->setFillColor(selectedTileOldColor);
+        int row = mousePos.y / tileSize.y;
+        int column = mousePos.x / tileSize.x;
+
+        if (row >= 0 && row <= 8 && column >= 0 && column <= 8) {
+            if (selectedTile != NULL) {
+                selectedTile->setFillColor(selectedTileOldColor);
+            }
+
+            selectedTile = &tileContainer[row][column];
+            selectedTileOldColor = selectedTile->getFillColor();
+            selectedTile->setFillColor(selectedColor);
         }
-
-        selectedTile = &tileContainer[row][column];
-        selectedTileOldColor = selectedTile->getFillColor();
-        selectedTile->setFillColor(selectedColor);
-    }
+    } 
 }
