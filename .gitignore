@@ -1,1 +1,6 @@
-bin/main.o
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/github-2/v16/Browse.VC.opendb
+/.vs/github-2/v16
