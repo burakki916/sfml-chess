@@ -6,10 +6,10 @@
 class PieceLogic
 {
 	public:
-		std::vector<sf::Vector2i> getPossibleMovements(); 
+		static std::vector<sf::Vector2i> getPossibleMovements(); 
 		bool testIfMoveIsValid(sf::Vector2i delta);
-		virtual void setPossibleMovements();
-		virtual void setTextures();
+		virtual void setPossibleMovements() {}
+		virtual void setTextures() {}
 	protected:
 		static sf::Texture* pieceTexture;
 		static std::vector<sf::Vector2i> possibleMovements;
@@ -20,6 +20,7 @@ class PawnLogic : PieceLogic {
 		 void setPossibleMovements() override;
 		 void setTextures() override;
 };
+/*
 class Rook : PieceLogic {
 	public: 
 		 void setPossibleMovements() override;
@@ -45,3 +46,4 @@ class King : PieceLogic {
 		 void setPossibleMovements() override;
 		 void setTextures() override;
 };
+*/

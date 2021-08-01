@@ -35,18 +35,12 @@ PieceColors Piece::GetPieceColor() {
 }
 void Piece::move(sf::Vector2i deltaXY) {
     //add logic later 
-    
     if(pieceLogic->testIfMoveIsValid(deltaXY)){
             position.x += deltaXY.x;
             position.y += deltaXY.y;
-            switch(pieceType){
-                ///test if pawn king or whatevver 
-                
-            }
             if(hasMoved == false ) hasMoved = true; 
     } else {
         std::cout << "Bad move retard! " << std::endl; // change this later lol 
     }
 }
-void setPossibleMovements();
 

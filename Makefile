@@ -20,4 +20,4 @@ $(BIN)/$(EXECUTABLE): $/*.cpp
 	$(CXX) $(CXX_FLAGS) -I$(INCLUDE) -L$(LIB) $^ -o $@ $(LIBRARIES)
 
 clean:
-	-rm $(BIN)/*v
+	-rm $(BIN)/*.o

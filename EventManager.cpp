@@ -16,6 +16,8 @@ void EventManager::handleSFMLEvent(sf::Event &thisEvent) {
 	EventInfo* thisEventInfo = new DefaultEventInfo;
 	switch (thisEvent.type) {
 		// Set EventInfo for specific events
+		default:
+			break;
 	}
 
 	auto range = EventManager::SFMLBindings.equal_range(thisEvent.type);
