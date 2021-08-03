@@ -1,6 +1,7 @@
 #ifndef PIECE_H
 #define PIECE_H
 #pragma once
+#include <cmath>
 #include "PieceLogic.hpp"
 #include "Window.hpp"
 #include "ChessScreen.hpp"
@@ -20,37 +21,45 @@ enum PieceColors{
 };
 class Piece{
 	public:
-		//static all pieces information 
-		static void initPieces();
-		static Piece* board[8][8];
+        Piece();
+
+        /* ----------------- static piece information ------------------- */ 
+        static void initPieces();
+        static void render();
+        static Piece* board[8][8];
 		static vector<Piece*> pieces; 
-		//end
-		Piece();
-		PieceLogic* getPieceLogic();
-		PieceTypes getPieceType(); 
+        static Piece* getPieceFromMouse(sf::Vector2i mousePos);
+        static sf::Vector2i spriteTexDem; 
+
+        /* -------------------- individual piece stuff--------------------*/ 
+        PieceLogic* getPieceLogic();
+        bool setPieceLogic(PieceLogic& newLogic); 
+
+		PieceTypes getPieceType();
+        bool setPieceType(PieceTypes newType); 
+
 		PieceColors getPieceColor();
+        bool setPieceColor(PieceColors newColor); 
 
-		void setPosition(sf::Vector2i newPos);
-		void move(sf::Vector2i deltaXY);
-		static void render(); 
-		virtual void setSpriteTex() {}
-		static sf::Vector2i spriteTexDem;
-		sf::Sprite* getSprite(); 
+		sf::Sprite* getSprite();
+        virtual void setSpriteTex() {}
 
-		static void handleMouseClick();
+        sf::Vector2i getPosition(); 
+        bool setPosition(sf::Vector2i newPos);
+        void move(sf::Vector2i deltaXY); // move to setPosition ?
+    protected: 
+        PieceLogic* pieceLogic= nullptr;
+        PieceTypes pieceType = pawn;
+        PieceColors pieceColor = PieceColors::black;
+        sf::Sprite pieceSprite;
+        sf::Vector2i position = sf::Vector2i(0,0); 
+        static sf::Texture piecesTexture;
 
-	protected:
-		PieceLogic* pieceLogic= nullptr;
-		sf::Vector2i position = sf::Vector2i(0,0); 
-		PieceColors pieceColor = PieceColors::black; 
-		PieceTypes pieceType = pawn;
-		bool hasMoved;
-		static sf::Texture piecesTexture;
-		sf::Sprite pieceSprite;
-	private:
-		static void deletePieces(); 
+        bool hasMoved; 
+    private: 
 		static void genPiecesOfColor(PieceColors color); 
-		 
+        static void deletePieces(); 
+
 };
 class PawnPiece : public Piece {
 	public: 
@@ -76,6 +85,4 @@ class KingPiece : public Piece {
 	public: 
 		void setSpriteTex() override; 
 };
-
-
 #endif
