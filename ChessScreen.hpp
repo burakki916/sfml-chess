@@ -1,6 +1,7 @@
 #pragma once
 #include "EventManager.hpp"
 #include <SFML/Graphics.hpp>
+#include "Piece.hpp"
 #include <utility> 
 class ChessScreen {
 	public:
@@ -28,5 +29,6 @@ class ChessScreen {
 	private:
 		// Helper function for initialize
 		static void setupTiles();
-		std::pair<sf::Vector2i,sf::Vector2i> tileClicks; 
+		static sf::Vector2i clickedKey;
+		static bool isAKeyClicked; 
 };

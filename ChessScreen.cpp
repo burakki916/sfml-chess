@@ -12,7 +12,8 @@ sf::Color ChessScreen::selectedColor = sf::Color(255, 255, 255);
 sf::RectangleShape *ChessScreen::selectedTile = NULL;
 sf::Color ChessScreen::selectedTileOldColor;
 sf::Vector2f ChessScreen::tileSize; 
-
+sf::Vector2i ChessScreen::clickedKey; 
+bool ChessScreen::isAKeyClicked;
 void ChessScreen::initialize() {
     if (!woodTexture.loadFromFile("MCWood.jpg")) {
         std::cout << "ERROR: Can't find texture : \"MCWood.jpg\"" << std::endl;
@@ -63,6 +64,13 @@ void ChessScreen::highlightTile(EventInfo *info) {
     if (row >= 0 && row <= 8 && column >= 0 && column <= 8) {
         if (selectedTile != NULL) {
             selectedTile->setFillColor(selectedTileOldColor);
+            if(!isAKeyClicked){
+                clickedKey = sf::Vector2i(row,column);
+                isAKeyClicked = true; 
+            }else {
+                Piece::board[8-clickedKey.y][clickedKey.x]->setPosition(sf::Vector2i(row,8-column)); 
+                isAKeyClicked = false; 
+            }
         }
 
         selectedTile = &tileContainer[row][column];
