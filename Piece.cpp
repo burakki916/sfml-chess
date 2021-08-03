@@ -1,84 +1,164 @@
+#include <cmath>
+#include <iostream>
 #include "Piece.hpp"  
-Piece::Piece(){
-    int roomWidth = Window::getSize().x;
-    int roomHeight = Window::getSize().y; 
-    float  scaleWidth = ((float)(roomWidth/8) / (float)Piece::spriteTexDem.x);
-    pieceSprite.setScale(scaleWidth,scaleWidth);
-    
-}
-/* ----------------- static piece information ------------------- */ 
+#include "Window.hpp"
+#include "ChessScreen.hpp"
+
+/* ----------------- Static Definitions ------------------- */
+
 Piece* Piece::board[8][8];
 vector<Piece*> Piece::pieces;
-sf::Vector2i Piece::spriteTexDem = sf::Vector2i(213,213);
 sf::Texture Piece::piecesTexture;
+sf::Vector2i Piece::spriteTexDem = sf::Vector2i(213, 213);
 
-void Piece::initPieces() {
+void Piece::initialize() {
+    piecesTexture.loadFromFile("pieces.png");
+}
 
-    if(piecesTexture.loadFromFile("pieces.png")){
-        std::cout << "texture loaded successfully! " << std::endl;
-    }
+void Piece::newBoard() {
     deletePieces();
     genPiecesOfColor(PieceColors::white);
     genPiecesOfColor(PieceColors::black);
 }
+
 void Piece::render() {
-    for(int row = 0; row<8; row++){
-        for(int column=0; column<8;column++ ){
-            if(board[row][column]!=nullptr ){
-            Window::draw(*board[row][column]->getSprite());
+    for (int row = 0; row < 8; row++) {
+        for (int column = 0; column < 8; column++) {
+            if (board[row][column] != nullptr) {
+                Window::draw(*board[row][column]->getSprite());
             }
         }
     }
 }
-Piece* Piece::getPieceFromMouse(sf::Vector2i mousePos) {
-    int row = 7-std::floor((mousePos.y / ChessScreen::tileSize.y));
-    int column = std::floor(mousePos.x / ChessScreen::tileSize.x);
-    return board[row][column];
+
+sf::Vector2i Piece::getNodeFromScreenPosition(sf::Vector2i screenPosition) {
+    int row = 7 - std::floor(screenPosition.y / ChessScreen::tileSize.y);
+    int column = std::floor(screenPosition.x / ChessScreen::tileSize.x);
+    return sf::Vector2i(column, row);
 }
-/*-------------------- general piece stuff -----------------*/ 
+
+Piece* Piece::getFromScreenPosition(sf::Vector2i screenPosition) {
+    sf::Vector2i thisNode = getNodeFromScreenPosition(screenPosition);
+    return board[thisNode.y][thisNode.x];
+}
+
+bool Piece::isEmpty(sf::Vector2i atNode) {
+    Piece* atPiece = board[atNode.y][atNode.x];
+    return atPiece == NULL;
+}
+
+Piece* Piece::at(sf::Vector2i thisNode) {
+    return board[thisNode.y][thisNode.x];
+}
+
+/*-------------------- Object Definitions -----------------*/ 
+
+
+Piece::Piece() {
+    float boardWidth = Window::getSize().x;
+    float  scaleWidth = (boardWidth / 8.0) / Piece::spriteTexDem.x;
+    sprite.setScale(scaleWidth, scaleWidth);
+}
+
+std::vector<sf::Vector2i> Piece::getPossibleMoves() {
+    std::vector<sf::Vector2i> blank;
+    return blank;
+}
+
+bool Piece::isEnemy(sf::Vector2i atNode) {
+    Piece* atPiece = board[atNode.y][atNode.x];
+    return atPiece != NULL && atPiece->getColor() != getColor();
+}
+
+bool Piece::isFriend(sf::Vector2i atNode) {
+    Piece* atPiece = board[atNode.y][atNode.x];
+    return atPiece != NULL && atPiece->getColor() == getColor();
+}
+
+bool Piece::isMoveValid(sf::Vector2i delta) {
+    // Consider converting possible moves to unordered_set
+    std::vector<sf::Vector2i> thisPossibleMoves = getPossibleMoves();
+    for (sf::Vector2i thisPossibleMove : thisPossibleMoves) {
+        if (delta == thisPossibleMove) return true;
+    }
+
+    return false;
+}
+
+/*
 PieceLogic* Piece::getPieceLogic() {
     return pieceLogic;
 }
+
 bool Piece::setPieceLogic(PieceLogic& newLogic) {
     pieceLogic = &newLogic;
     return true; 
 }
-PieceTypes Piece::getPieceType() {
-    return pieceType; 
+*/
+
+PieceTypes Piece::getType() {
+    return type; 
 }
-bool Piece::setPieceType(PieceTypes newType) {
-    pieceType = newType; 
+
+bool Piece::setType(PieceTypes newType) {
+    type = newType; 
     return true; 
 }
 
-PieceColors Piece::getPieceColor() {
-    return pieceColor;
+PieceColors Piece::getColor() {
+    return color;
 }
-bool Piece::setPieceColor(PieceColors newColor) {
-    pieceColor = newColor; 
+
+void Piece::setColor(PieceColors newColor) {
+    color = newColor; 
+}
+
+// Flips for black
+sf::Vector2i Piece::flip(sf::Vector2i toFlip) {
+    if (getColor() == PieceColors::black) {
+        return sf::Vector2i(toFlip.x, -toFlip.y);
+    }
+
+    return toFlip;
 }
 
 sf::Sprite* Piece::getSprite() {
-    return &pieceSprite; 
+    return &sprite; 
 }
 
+sf::Vector2i Piece::getCurrentNode() {
+    return currentNode;
+}
+
+void Piece::setCurrentNode(sf::Vector2i newCurentNode) {
+    currentNode = newCurentNode;
+}
+
+/*
 sf::Vector2i Piece::getPosition(){
     return position; 
-}
-bool Piece::setPosition(sf::Vector2i newPos) {
-    //std::cout << "new pos is " << newPos.x << "," << newPos.y << std::endl; 
-    pieceSprite.setPosition(sf::Vector2f(newPos.x*ChessScreen::tileSize.x, (7-newPos.y)* ChessScreen::tileSize.y));
-    //std::cout << "Position on screen is " << pieceSprite.getPosition().x << "," << pieceSprite.getPosition().y << std::endl; 
-    return true; 
-}
-void Piece::move(sf::Vector2i deltaXY) {
-    //add logic later 
-    if(pieceLogic->testIfMoveIsValid(deltaXY)){
-            position.x += deltaXY.x;
-            position.y += deltaXY.y;
-            if(hasMoved == false ) hasMoved = true; 
-    } else {
-        std::cout << "Bad move retard! " << std::endl; // change this later lol 
+}*/
+
+void Piece::updateSprite() {
+    sprite.setPosition(sf::Vector2f(currentNode.x * ChessScreen::tileSize.x, (7 - currentNode.y) * ChessScreen::tileSize.y));
+} 
+
+bool Piece::attemptMove(sf::Vector2i toNode) {
+    sf::Vector2i deltaXY = toNode - currentNode;
+
+    if(isMoveValid(deltaXY)) {
+        board[currentNode.y][currentNode.x] = NULL;
+        currentNode.x += deltaXY.x;
+        currentNode.y += deltaXY.y;
+        board[currentNode.y][currentNode.x] = this;
+
+        hasMoved = true;
+        updateSprite();
+        
+        return true;
+    } 
+    else {
+        return false;
     }
 }
 
@@ -89,55 +169,57 @@ void Piece::genPiecesOfColor(PieceColors color) {
             if(j==0){
                 if(i==0 || i ==7){
                     curPiece = new RookPiece;
-                    curPiece->setPieceType(PieceTypes::rook);
+                    curPiece->setType(PieceTypes::rook);
                 }
                 else if(i==1 || i ==6){
                     curPiece = new KnightPiece;
-                    curPiece->setPieceType(PieceTypes::knight);
+                    curPiece->setType(PieceTypes::knight);
                 }
                 else if(i==2 || i ==5){
                     curPiece = new BishopPiece;
-                    curPiece->setPieceType(PieceTypes::bishop);
+                    curPiece->setType(PieceTypes::bishop);
                 }
                 else if(i == 3){
                     curPiece = new QueenPiece;
-                    curPiece->setPieceType(PieceTypes::queen);
+                    curPiece->setType(PieceTypes::queen);
                 }
                 else if(i == 4){
                     curPiece = new KingPiece;
-                    curPiece->setPieceType(PieceTypes::king);
+                    curPiece->setType(PieceTypes::king);
                 }
                 else {
                     curPiece = new PawnPiece;
-                    curPiece->setPieceType(PieceTypes::pawn);
+                    curPiece->setType(PieceTypes::pawn);
                 }
             } 
             else {
                 curPiece = new PawnPiece;
-                curPiece->setPieceType(PieceTypes::pawn);
+                curPiece->setType(PieceTypes::pawn);
             }
             if(color == PieceColors::white){
-                curPiece->setPieceColor(PieceColors::white);
+                curPiece->setColor(PieceColors::white);
                 curPiece->getSprite()->setColor(sf::Color(150,0,0));
-                curPiece->setPosition(sf::Vector2i(i,j));
+                curPiece->setCurrentNode(sf::Vector2i(i,j));
                 Piece::board[j][i] = curPiece; 
             } else {
-                curPiece->setPieceColor(PieceColors::black);
+                curPiece->setColor(PieceColors::black);
                 curPiece->getSprite()->setColor(sf::Color(0,0,150));
-                curPiece->setPosition(sf::Vector2i(i,7-j));
+                curPiece->setCurrentNode(sf::Vector2i(i,7-j));
                 Piece::board[7-j][i] = curPiece; 
             }
             curPiece->setSpriteTex();
             Piece::pieces.push_back(curPiece);
-            
+            curPiece->updateSprite();
         }
     }
 }
+
 void Piece::deletePieces() {
     for(auto &itr : Piece::pieces){
         delete itr;
         pieces.pop_back(); 
     }
+
     for(int i =0;i<8;i++){
         for(int j = 0; j<8;j++){
             Piece::board[i][j] = nullptr;

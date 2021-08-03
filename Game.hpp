@@ -28,5 +28,5 @@ class Game {
 
 	private:
 		// Helper. Select new piece or deselect current piece by clicking on x, y
-		static void selectPiece(int x, int y);
+		static void selectPiece(sf::Vector2i thisNode);
 };

@@ -1,13 +1,8 @@
-#ifndef PIECE_H
-#define PIECE_H
 #pragma once
-#include <cmath>
-#include "PieceLogic.hpp"
-#include "Window.hpp"
-#include "ChessScreen.hpp"
-#include "EventManager.hpp"
+#include <vector>
+#include "SFML/Graphics.hpp"
 
-enum PieceTypes{
+enum class PieceTypes {
 	pawn,
 	rook,
 	knight,
@@ -15,74 +10,99 @@ enum PieceTypes{
 	queen,
 	king,
 };
-enum PieceColors{
+
+enum class PieceColors {
 	black,
 	white,
 };
-class Piece{
+
+class Piece {
 	public:
         Piece();
 
-        /* ----------------- static piece information ------------------- */ 
-        static void initPieces();
-        static void render();
-        static Piece* board[8][8];
-		static vector<Piece*> pieces; 
-        static Piece* getPieceFromMouse(sf::Vector2i mousePos);
-        static sf::Vector2i spriteTexDem; 
+        // Static Members 
 
-        /* -------------------- individual piece stuff--------------------*/ 
-        PieceLogic* getPieceLogic();
-        bool setPieceLogic(PieceLogic& newLogic); 
+		static Piece* board[8][8];
+		static std::vector<Piece*> pieces;
+		static sf::Vector2i spriteTexDem;
 
-		PieceTypes getPieceType();
-        bool setPieceType(PieceTypes newType); 
+        static void initialize();
+        static void render();   
 
-		PieceColors getPieceColor();
-        bool setPieceColor(PieceColors newColor); 
+		static void newBoard();
+		static Piece* at(sf::Vector2i thisNode);
+		static Piece* getFromScreenPosition(sf::Vector2i screenPosition);
+		static sf::Vector2i getNodeFromScreenPosition(sf::Vector2i screenPosition);
+
+		// Core logic 
+
+		bool attemptMove(sf::Vector2i deltaXY);
+		bool isEnemy(sf::Vector2i atNode);
+		bool isFriend(sf::Vector2i atNode);
+		static bool isEmpty(sf::Vector2i atNode);
+
+		bool isMoveValid(sf::Vector2i delta);
+		virtual std::vector<sf::Vector2i> getPossibleMoves();	
+
+
+        // Object members 
+
+		void updateSprite();
+
+		PieceTypes getType();
+        bool setType(PieceTypes newType); 
+
+		PieceColors getColor();
+        void setColor(PieceColors newColor); 
+		sf::Vector2i flip(sf::Vector2i toFlip);
 
 		sf::Sprite* getSprite();
         virtual void setSpriteTex() {}
 
-        sf::Vector2i getPosition(); 
-        bool setPosition(sf::Vector2i newPos);
-        void move(sf::Vector2i deltaXY); // move to setPosition ?
+		sf::Vector2i getCurrentNode();
+		void setCurrentNode(sf::Vector2i newCurentNode);		
+
     protected: 
-        PieceLogic* pieceLogic= nullptr;
-        PieceTypes pieceType = pawn;
-        PieceColors pieceColor = PieceColors::black;
-        sf::Sprite pieceSprite;
-        sf::Vector2i position = sf::Vector2i(0,0); 
-        static sf::Texture piecesTexture;
+		static sf::Texture piecesTexture;
 
-        bool hasMoved; 
+		sf::Sprite sprite;
+		bool hasMoved = false;
+        PieceTypes type = PieceTypes::pawn;
+		PieceColors color = PieceColors::black;
+		sf::Vector2i currentNode = sf::Vector2i(0, 0);
+    
     private: 
+		static void deletePieces();
 		static void genPiecesOfColor(PieceColors color); 
-        static void deletePieces(); 
-
 };
+
 class PawnPiece : public Piece {
 	public: 
 		void setSpriteTex() override; 
+		std::vector<sf::Vector2i> getPossibleMoves() override;
 };
+
 class RookPiece : public Piece {
 	public: 
 		void setSpriteTex() override; 
 };
+
 class KnightPiece : public Piece {
 	public: 
 		void setSpriteTex() override; 
 };
+
 class BishopPiece : public Piece {
 	public: 
 		void setSpriteTex() override; 
 };
+
 class QueenPiece : public Piece {
 	public: 
 		void setSpriteTex() override; 
 };
+
 class KingPiece : public Piece {
 	public: 
 		void setSpriteTex() override; 
 };
-#endif
