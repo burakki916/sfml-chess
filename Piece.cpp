@@ -25,7 +25,7 @@ void Piece::initPieces() {
     for(int i =0; i<8; i++){
         Piece* curPiece = new PawnPiece;
         curPiece->setSpriteTex();
-        curPiece->setPosition(sf::Vector2i(tileWidth*i,tileHeight));
+        curPiece->setPosition(sf::Vector2i(i,1));
         Piece::pieces.push_back(curPiece);
         Piece::board[1][i] = curPiece; 
     }
@@ -57,8 +57,10 @@ PieceColors Piece::getPieceColor() {
 }
 void Piece::setPosition(sf::Vector2i newPos) {
     
-    pieceSprite.setPosition((newPos.x)*Window::getSize().x/8,(8-newPos.y)*Window::getSize().y/8);
-   // pieceSprite.setPosition(5,5);
+    std::cout << "new pos is " << newPos.x << "," << newPos.y << std::endl; 
+    pieceSprite.setPosition(sf::Vector2f(newPos.x*ChessScreen::tileSize.x, (7-newPos.y)* ChessScreen::tileSize.y));
+    std::cout << "Position on screen is " << pieceSprite.getPosition().x << "," << pieceSprite.getPosition().y << std::endl; 
+    //pieceSprite.setPosition(sf::Vector2f(5,5));
 }
 void Piece::move(sf::Vector2i deltaXY) {
     //add logic later 
@@ -74,7 +76,6 @@ void Piece::render() {
     for(int row = 0; row<8; row++){
         for(int column=0; column<8;column++ ){
             if(board[row][column]!=nullptr ){
-            //std::cout << "trying to render!" << std::endl;
             Window::draw(*board[row][column]->getSprite());
             }
         }

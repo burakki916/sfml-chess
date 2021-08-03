@@ -1,12 +1,12 @@
 #include "Window.hpp"
-
+#include <iostream>
 sf::RenderWindow Window::mainWindow;
 
 void Window::initialize() {
 	sf::Vector2u size(720, 720);
 	std::string title = "SFML Chess";
 
-	mainWindow.create({size.x, size.y}, title);
+	mainWindow.create({size.x, size.y}, title,sf::Style::Titlebar);
 
 	EventManager::connectToEvent("CloseWindow", &close);
 	EventManager::bindInputToEvent("CloseWindow", sf::Event::Closed);
@@ -21,6 +21,7 @@ void Window::beginDraw() {
 }
 
 void Window::draw(sf::Drawable& toDraw) {
+	
 	mainWindow.draw(toDraw);
 }
 

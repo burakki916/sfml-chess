@@ -3,12 +3,15 @@
 #include "ChessScreen.hpp"
 #include "EventManager.hpp"
 #include "Piece.hpp"
+#include "ScreenManager.hpp"
 
 void Game::initialize() {
 	Window::initialize();
 
 	ChessScreen::initialize();
 	Piece::initPieces(); 
+
+	ScreenManager::setCurrentScreen("ChessScreen");
 }
 
 void Game::run() {
@@ -18,8 +21,7 @@ void Game::run() {
 
 void Game::render() {
 	Window::beginDraw();
-	ChessScreen::render();
-	Piece::render(); 
+	ScreenManager::renderScreen();
 	Window::endDraw();
 	
 }

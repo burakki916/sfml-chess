@@ -1,5 +1,6 @@
 #pragma once
-
+#include "EventManager.hpp"
+#include <SFML/Graphics.hpp>
 class ChessScreen {
 	public:
 		static sf::Texture woodTexture;
@@ -7,6 +8,7 @@ class ChessScreen {
 		static sf::RectangleShape tileContainer[8][8];
 		static sf::Color tileColor1;
 		static sf::Color tileColor2;
+		static sf::Vector2f tileSize; 
 
 		static sf::Color selectedColor;
 		static sf::RectangleShape *selectedTile;
@@ -14,7 +16,6 @@ class ChessScreen {
 
 		// Initialize objects & events
 		static void initialize();
-
 		// Called every frame where ChessScreen is rendered
 		static void render();
 

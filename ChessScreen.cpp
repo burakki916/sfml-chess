@@ -11,6 +11,7 @@ sf::Color ChessScreen::tileColor2 = sf::Color(212, 187, 0);
 sf::Color ChessScreen::selectedColor = sf::Color(255, 255, 255);
 sf::RectangleShape *ChessScreen::selectedTile = NULL;
 sf::Color ChessScreen::selectedTileOldColor;
+sf::Vector2f ChessScreen::tileSize; 
 
 void ChessScreen::initialize() {
     if (!woodTexture.loadFromFile("MCWood.jpg")) {
@@ -33,7 +34,7 @@ void ChessScreen::render() {
 
 void ChessScreen::setupTiles() {
     sf::Vector2u windowSize = Window::getSize();
-    sf::Vector2f tileSize(windowSize.x/8, windowSize.y/8);
+    tileSize = sf::Vector2f(windowSize.x/8, windowSize.y/8);
 
     for (int row = 0; row < 8; row++) {
         for (int column = 0; column < 8; column++) {

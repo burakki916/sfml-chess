@@ -4,6 +4,8 @@
 #include "Piece.hpp"
 #include "PieceLogic.hpp"
 #include "Window.hpp"
+#include "ChessScreen.hpp"
+
 enum PieceTypes{
 	pawn,
 	rook,

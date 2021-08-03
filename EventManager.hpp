@@ -1,33 +1,41 @@
 #pragma once
 #include <unordered_map>
 #include <SFML/Window.hpp>
+
 using namespace std;
+
+class TestEventInfo : public sf::Event {
+	public:
+
+};
 
 // EventInfo is passed into every event callback function (from connectToEvent)
 // Ability to provide any necessary information to the callback functions
 class EventInfo {
 	public:
-		EventInfo(string initInputType, int initCode) {
-			inputType = initInputType;
-			code = initCode;
-		}
+		int type = -1;
 
-		string inputType;
-		int code;
+		union {
+			sf::Event::SizeEvent size;
+			sf::Event::KeyEvent key;
+			sf::Event::TextEvent text;
+			sf::Event::MouseMoveEvent mouseMove;
+			sf::Event::MouseButtonEvent mouseButton;
+			sf::Event::MouseWheelScrollEvent mouseWheelScroll;
+			sf::Event::JoystickMoveEvent joystickMove;
+			sf::Event::JoystickButtonEvent joystickButton;
+			sf::Event::JoystickConnectEvent joystickConnect;
+			sf::Event::TouchEvent touch;
+			sf::Event::SensorEvent sensor;
+		};
+
+		EventInfo(sf::Event& thisEvent);
+		EventInfo(int initType);
+		EventInfo();
 };
 
-// The following inherited EventInfo classes can also be passed into the callback functions
-// These help define info necessary for specific types of input
 class DefaultEventInfo : public EventInfo {
-	public: DefaultEventInfo() : EventInfo("N/A", -1) { }
-};
-
-class KeyboardEventInfo : public EventInfo {
-	public: KeyboardEventInfo(int keycode) : EventInfo("Keyboard", keycode) { }
-};
-
-class MouseEventInfo : public EventInfo {
-	public: MouseEventInfo(int inputcode) : EventInfo("Mouse", inputcode) { }
+	public: DefaultEventInfo() : EventInfo(-1) { }
 };
 
 class EventManager {
