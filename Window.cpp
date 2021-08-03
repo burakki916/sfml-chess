@@ -6,7 +6,7 @@ void Window::initialize() {
 	sf::Vector2u size(720, 720);
 	std::string title = "SFML Chess";
 
-	mainWindow.create({size.x, size.y}, title,sf::Style::Titlebar);
+	mainWindow.create({size.x, size.y}, title,sf::Style::Close);
 
 	EventManager::connectToEvent("CloseWindow", &close);
 	EventManager::bindInputToEvent("CloseWindow", sf::Event::Closed);
