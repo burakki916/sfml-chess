@@ -16,7 +16,7 @@ class EventInfo {
 		int type = -1;
 
 		union {
-			sf::Event::SizeEvent size;
+			sf::Event::SizeEvent size{};
 			sf::Event::KeyEvent key;
 			sf::Event::TextEvent text;
 			sf::Event::MouseMoveEvent mouseMove;
