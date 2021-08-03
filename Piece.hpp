@@ -44,13 +44,35 @@ class Piece{
 		bool hasMoved;
 		static sf::Texture piecesTexture;
 		sf::Sprite pieceSprite;
+	private:
+		static void deletePieces(); 
+		static void genPiecesOfColor(PieceColors color); 
 		 
 };
 class PawnPiece : public Piece {
 	public: 
 		void setSpriteTex() override; 
 };
-
+class RookPiece : public Piece {
+	public: 
+		void setSpriteTex() override; 
+};
+class KnightPiece : public Piece {
+	public: 
+		void setSpriteTex() override; 
+};
+class BishopPiece : public Piece {
+	public: 
+		void setSpriteTex() override; 
+};
+class QueenPiece : public Piece {
+	public: 
+		void setSpriteTex() override; 
+};
+class KingPiece : public Piece {
+	public: 
+		void setSpriteTex() override; 
+};
 
 
 #endif

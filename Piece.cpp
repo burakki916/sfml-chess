@@ -8,49 +8,23 @@ void Piece::initPieces() {
     if(piecesTexture.loadFromFile("pieces.png")){
         std::cout << "texture loaded successfully! " << std::endl;
     }
-    int tileWidth = Window::getSize().x/8; 
-    int tileHeight = Window::getSize().y/8; 
-    for(auto &itr : Piece::pieces){
-        delete itr;
-        pieces.pop_back(); 
-    }
-    for(int i =0;i<8;i++){
-        for(int j = 0; j<8;j++){
-            board[i][j] = nullptr;
-        }
-    }
-
-    //making white pieces 
-    
-    for(int i =0; i<8; i++){
-        Piece* curPiece = new PawnPiece;
-        curPiece->setSpriteTex();
-        curPiece->setPosition(sf::Vector2i(i,1));
-        Piece::pieces.push_back(curPiece);
-        Piece::board[1][i] = curPiece; 
-    }
-    
-        // making white pawns 
-    
-    // making black pieces 
-
-        // making black pawns 
+    deletePieces();
+    genPiecesOfColor(PieceColors::white);
+    genPiecesOfColor(PieceColors::black);
 }
 
 Piece::Piece(){
     int roomWidth = Window::getSize().x;
     int roomHeight = Window::getSize().y; 
     float  scaleWidth = ((float)(roomWidth/8) / (float)Piece::spriteTexDem.x);
-    std:: cout << "scale factor of the piece is " << scaleWidth << std::endl; 
     pieceSprite.setScale(scaleWidth,scaleWidth);
-    pieceSprite.setColor(sf::Color(255, 255, 255));
+    
 }
 PieceLogic* Piece::getPieceLogic() {
     return pieceLogic;
 }
 PieceTypes Piece::getPieceType() {
     return pieceType; 
-    
 }
 PieceColors Piece::getPieceColor() {
     return pieceColor;
@@ -86,9 +60,83 @@ sf::Sprite* Piece::getSprite() {
     return &pieceSprite; 
 }
 
+void Piece::deletePieces() {
+    for(auto &itr : Piece::pieces){
+        delete itr;
+        pieces.pop_back(); 
+    }
+    for(int i =0;i<8;i++){
+        for(int j = 0; j<8;j++){
+            Piece::board[i][j] = nullptr;
+        }
+    }
+}
+void Piece::genPiecesOfColor(PieceColors color) {
+    for(int j = 0; j<2; j++){
+        for(int i = 0; i<8;i++){
+            Piece* curPiece;
+            if(j==0){
+                if(i==0 || i ==7){
+                    curPiece = new RookPiece;
+                }
+                if(i==1 || i ==6){
+                    curPiece = new KnightPiece;
+                }
+                if(i==2 || i ==5){
+                    curPiece = new BishopPiece;
+                }
+                if(i == 3){
+                    curPiece = new QueenPiece;
+                }
+                if(i == 4){
+                    curPiece = new KingPiece;
+                }
+            } else {
+                    curPiece = new PawnPiece;
+            }
+            if(color == PieceColors::white){
+                curPiece->getSprite()->setColor(sf::Color(150,0,0));
+                curPiece->setPosition(sf::Vector2i(i,j));
+                Piece::board[j][i] = curPiece; 
+            } else {
+                curPiece->getSprite()->setColor(sf::Color(0,0,150));
+                curPiece->setPosition(sf::Vector2i(i,7-j));
+                Piece::board[7-j][i] = curPiece; 
+            }
+            curPiece->setSpriteTex();
+            Piece::pieces.push_back(curPiece);
+            
+        }
+    }
+}
+
 void PawnPiece::setSpriteTex() {
     pieceSprite.setTexture(Piece::piecesTexture);
     pieceSprite.setTextureRect(sf::IntRect(Piece::spriteTexDem.x*5,0,Piece::spriteTexDem.x,Piece::spriteTexDem.y)); 
+}
+void RookPiece::setSpriteTex() {
+    pieceSprite.setTexture(Piece::piecesTexture);
+    pieceSprite.setTextureRect(sf::IntRect(Piece::spriteTexDem.x*4,0,Piece::spriteTexDem.x,Piece::spriteTexDem.y)); 
+}
+
+void KnightPiece::setSpriteTex() {
+    pieceSprite.setTexture(Piece::piecesTexture);
+    pieceSprite.setTextureRect(sf::IntRect(Piece::spriteTexDem.x*3,0,Piece::spriteTexDem.x,Piece::spriteTexDem.y)); 
+}
+
+void BishopPiece::setSpriteTex() {
+    pieceSprite.setTexture(Piece::piecesTexture);
+    pieceSprite.setTextureRect(sf::IntRect(Piece::spriteTexDem.x*2,0,Piece::spriteTexDem.x,Piece::spriteTexDem.y));     
+}
+
+void QueenPiece::setSpriteTex() {
+    pieceSprite.setTexture(Piece::piecesTexture);
+    pieceSprite.setTextureRect(sf::IntRect(Piece::spriteTexDem.x*1,0,Piece::spriteTexDem.x,Piece::spriteTexDem.y));     
+}
+
+void KingPiece::setSpriteTex() {
+    pieceSprite.setTexture(Piece::piecesTexture);
+    pieceSprite.setTextureRect(sf::IntRect(Piece::spriteTexDem.x*0,0,Piece::spriteTexDem.x,Piece::spriteTexDem.y));     
 }
 
 
