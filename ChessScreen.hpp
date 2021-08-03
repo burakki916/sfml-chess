@@ -29,6 +29,4 @@ class ChessScreen {
 	private:
 		// Helper function for initialize
 		static void setupTiles();
-		static sf::Vector2i clickedKey;
-		static bool isAKeyClicked; 
 };

@@ -91,8 +91,12 @@ void Piece::genPiecesOfColor(PieceColors color) {
                 if(i == 4){
                     curPiece = new KingPiece;
                 }
-            } else {
+                else {
                     curPiece = new PawnPiece;
+                }
+            } 
+            else {
+                curPiece = new PawnPiece;
             }
             if(color == PieceColors::white){
                 curPiece->getSprite()->setColor(sf::Color(150,0,0));
