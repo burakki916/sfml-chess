@@ -1,10 +1,10 @@
 #ifndef PIECE_H
 #define PIECE_H
 #pragma once
-#include "Piece.hpp"
 #include "PieceLogic.hpp"
 #include "Window.hpp"
 #include "ChessScreen.hpp"
+#include "EventManager.hpp"
 
 enum PieceTypes{
 	pawn,
@@ -36,6 +36,9 @@ class Piece{
 		virtual void setSpriteTex() {}
 		static sf::Vector2i spriteTexDem;
 		sf::Sprite* getSprite(); 
+
+		static void handleMouseClick();
+
 	protected:
 		PieceLogic* pieceLogic= nullptr;
 		sf::Vector2i position = sf::Vector2i(0,0); 

@@ -1,6 +1,7 @@
 #pragma once
 #include "EventManager.hpp"
 #include <SFML/Graphics.hpp>
+#include <utility> 
 class ChessScreen {
 	public:
 		static sf::Texture woodTexture;
@@ -27,4 +28,5 @@ class ChessScreen {
 	private:
 		// Helper function for initialize
 		static void setupTiles();
+		std::pair<sf::Vector2i,sf::Vector2i> tileClicks; 
 };
