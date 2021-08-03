@@ -14,6 +14,7 @@ void ScreenManager::renderScreen() {
 	else if (ScreenManager::currentScreen == "ChessScreen") {
 		ChessScreen::render();
 		Piece::render(); 
+		
 	}
 }
 

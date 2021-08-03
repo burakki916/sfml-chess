@@ -3,7 +3,8 @@ Piece* Piece::board[8][8];
 vector<Piece*> Piece::pieces;
 sf::Vector2i Piece::spriteTexDem = sf::Vector2i(213,213);
 sf::Texture Piece::piecesTexture;
-void Piece::initPieces() {
+//this function is crazy 
+void Piece::initPieces() { // super crazy 
 
     if(piecesTexture.loadFromFile("pieces.png")){
         std::cout << "texture loaded successfully! " << std::endl;
