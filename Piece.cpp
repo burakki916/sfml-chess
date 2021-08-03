@@ -79,16 +79,16 @@ void Piece::genPiecesOfColor(PieceColors color) {
                 if(i==0 || i ==7){
                     curPiece = new RookPiece;
                 }
-                if(i==1 || i ==6){
+                else if(i==1 || i ==6){
                     curPiece = new KnightPiece;
                 }
-                if(i==2 || i ==5){
+                else if(i==2 || i ==5){
                     curPiece = new BishopPiece;
                 }
-                if(i == 3){
+                else if(i == 3){
                     curPiece = new QueenPiece;
                 }
-                if(i == 4){
+                else if(i == 4){
                     curPiece = new KingPiece;
                 }
                 else {
