@@ -5,33 +5,50 @@
 #include "PieceLogic.hpp"
 #include "Window.hpp"
 enum PieceTypes{
-	Pawn,
-	Rook,
-	Knight,
-	Bishop,
-	Queen,
-	King,
+	pawn,
+	rook,
+	knight,
+	bishop,
+	queen,
+	king,
 };
 enum PieceColors{
-	Black,
-	White,
+	black,
+	white,
 };
 class Piece{
 	public:
-		Piece(PieceTypes PieceType);
-		PieceLogic* GetPieceLogic();
-		PieceTypes GetPieceType(); 
-		PieceColors GetPieceColor();
+		//static all pieces information 
+		static void initPieces();
+		static Piece* board[8][8];
+		static vector<Piece*> pieces; 
+		//end
+		Piece();
+		PieceLogic* getPieceLogic();
+		PieceTypes getPieceType(); 
+		PieceColors getPieceColor();
 
 		void setPosition(sf::Vector2i newPos);
 		void move(sf::Vector2i deltaXY);
-		void render(Window* l_window); 
-	private:
+		static void render(); 
+		virtual void setSpriteTex() {}
+		static sf::Vector2i spriteTexDem;
+		sf::Sprite* getSprite(); 
+	protected:
 		PieceLogic* pieceLogic= nullptr;
 		sf::Vector2i position = sf::Vector2i(0,0); 
-		PieceColors pieceColor = PieceColors::Black; 
-		PieceTypes pieceType; 
-		bool hasMoved; 
+		PieceColors pieceColor = PieceColors::black; 
+		PieceTypes pieceType = pawn;
+		bool hasMoved;
+		static sf::Texture piecesTexture;
+		sf::Sprite pieceSprite;
+		 
 };
+class PawnPiece : public Piece {
+	public: 
+		void setSpriteTex() override; 
+};
+
+
 
 #endif

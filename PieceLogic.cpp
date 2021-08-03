@@ -1,6 +1,6 @@
 #include "PieceLogic.hpp"  
 std::vector<sf::Vector2i> PieceLogic::possibleMovements;
-sf::Texture* PieceLogic::pieceTexture; 
+sf::Texture* PieceLogic::pieceTexture;
 bool PieceLogic::testIfMoveIsValid(sf::Vector2i delta) {
     auto pos = std::find(possibleMovements.begin(),possibleMovements.end(),delta);
     if(pos==possibleMovements.end()){

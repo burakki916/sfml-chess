@@ -6,9 +6,9 @@
 sf::Texture ChessScreen::woodTexture;
 sf::RectangleShape ChessScreen::tileContainer[8][8];
 
-sf::Color ChessScreen::tileColor1 = sf::Color(130, 73, 11);
+sf::Color ChessScreen::tileColor1 = sf::Color(50, 30, 29);
 sf::Color ChessScreen::tileColor2 = sf::Color(212, 187, 0);
-sf::Color ChessScreen::selectedColor = sf::Color(50, 50, 50);
+sf::Color ChessScreen::selectedColor = sf::Color(255, 255, 255);
 sf::RectangleShape *ChessScreen::selectedTile = NULL;
 sf::Color ChessScreen::selectedTileOldColor;
 

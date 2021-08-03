@@ -1,0 +1,2 @@
+Piece :board convention is
+    board[row][coloumn], and the origin is the bottom left  
