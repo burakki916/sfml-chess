@@ -40,6 +40,7 @@ class Piece {
 		bool isEnemy(sf::Vector2i atNode);
 		bool isFriend(sf::Vector2i atNode);
 		static bool isEmpty(sf::Vector2i atNode);
+		static bool isValid(sf::Vector2i atNode);
 
 		bool isMoveValid(sf::Vector2i delta);
 		virtual std::vector<sf::Vector2i> getPossibleMoves();	
@@ -85,24 +86,29 @@ class PawnPiece : public Piece {
 class RookPiece : public Piece {
 	public: 
 		void setSpriteTex() override; 
+		std::vector<sf::Vector2i> getPossibleMoves() override;
 };
 
 class KnightPiece : public Piece {
 	public: 
 		void setSpriteTex() override; 
+		std::vector<sf::Vector2i> getPossibleMoves() override;
 };
 
 class BishopPiece : public Piece {
 	public: 
 		void setSpriteTex() override; 
+		std::vector<sf::Vector2i> getPossibleMoves() override;
 };
 
 class QueenPiece : public Piece {
 	public: 
 		void setSpriteTex() override; 
+		std::vector<sf::Vector2i> getPossibleMoves() override;
 };
 
 class KingPiece : public Piece {
 	public: 
 		void setSpriteTex() override; 
+		std::vector<sf::Vector2i> getPossibleMoves() override;
 };

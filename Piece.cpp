@@ -65,14 +65,18 @@ std::vector<sf::Vector2i> Piece::getPossibleMoves() {
     return blank;
 }
 
+bool Piece::isValid(sf::Vector2i atNode) {
+    return atNode.x >= 0 && atNode.x <= 7 && atNode.y >= 0 && atNode.y <= 7;
+}
+
 bool Piece::isEnemy(sf::Vector2i atNode) {
     Piece* atPiece = board[atNode.y][atNode.x];
-    return atPiece != NULL && atPiece->getColor() != getColor();
+    return atPiece != NULL && atPiece->getColor() != this->getColor();
 }
 
 bool Piece::isFriend(sf::Vector2i atNode) {
     Piece* atPiece = board[atNode.y][atNode.x];
-    return atPiece != NULL && atPiece->getColor() == getColor();
+    return atPiece != NULL && atPiece->getColor() == this->getColor();
 }
 
 bool Piece::isMoveValid(sf::Vector2i delta) {
