@@ -71,6 +71,8 @@ class Piece {
         PieceTypes type = PieceTypes::pawn;
 		PieceColors color = PieceColors::black;
 		sf::Vector2i currentNode = sf::Vector2i(0, 0);
+
+		void extend(std::vector<sf::Vector2i> &movements, sf::Vector2i direction);
     
     private: 
 		static void deletePieces();

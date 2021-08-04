@@ -1,6 +1,19 @@
 #include "Piece.hpp"
 #include <iostream>
 
+void Piece::extend(std::vector<sf::Vector2i>& movements, sf::Vector2i direction) {
+    for (int i = 1; i < 8; i++) {
+        sf::Vector2i toCheck(direction.x * i, direction.y * i);
+
+        if (!isValid(currentNode + toCheck) || isFriend(currentNode + toCheck)) break;
+        else if (isEmpty(currentNode + toCheck)) movements.push_back(toCheck);
+        else if (isEnemy(currentNode + toCheck)) {
+            movements.push_back(toCheck);
+            break;
+        }
+    }
+}
+
 std::vector<sf::Vector2i> PawnPiece::getPossibleMoves() {
     std::vector<sf::Vector2i> movements;
 
@@ -30,53 +43,10 @@ std::vector<sf::Vector2i> PawnPiece::getPossibleMoves() {
 std::vector<sf::Vector2i> RookPiece::getPossibleMoves() {
     std::vector<sf::Vector2i> movements;
 
-    // Right
-    for (int i = 1; i < 8; i++) {
-        sf::Vector2i toCheck(i, 0);
-
-        if (!isValid(currentNode + toCheck) || isFriend(currentNode + toCheck)) break;
-        else if (isEmpty(currentNode + toCheck)) movements.push_back(toCheck);
-        else if (isEnemy(currentNode + toCheck)) {
-            movements.push_back(toCheck);
-            break;
-        }
-    }
-
-    // Left
-    for (int i = 1; i < 8; i++) {
-        sf::Vector2i toCheck(-i, 0);
-
-        if (!isValid(currentNode + toCheck) || isFriend(currentNode + toCheck)) break;
-        else if (isEmpty(currentNode + toCheck)) movements.push_back(toCheck);
-        else if (isEnemy(currentNode + toCheck)) {
-            movements.push_back(toCheck);
-            break;
-        }
-    }
-
-    // Up
-    for (int i = 1; i < 8; i++) {
-        sf::Vector2i toCheck(0, i);
-
-        if (!isValid(currentNode + toCheck) || isFriend(currentNode + toCheck)) break;
-        else if (isEmpty(currentNode + toCheck)) movements.push_back(toCheck);
-        else if (isEnemy(currentNode + toCheck)) {
-            movements.push_back(toCheck);
-            break;
-        }
-    }
-
-    // Down
-    for (int i = 1; i < 8; i++) {
-        sf::Vector2i toCheck(0, -i);
-
-        if (!isValid(currentNode + toCheck) || isFriend(currentNode + toCheck)) break;
-        else if (isEmpty(currentNode + toCheck)) movements.push_back(toCheck);
-        else if (isEnemy(currentNode + toCheck)) {
-            movements.push_back(toCheck);
-            break;
-        }
-    }
+    extend(movements, sf::Vector2i(1, 0));
+    extend(movements, sf::Vector2i(-1, 0));
+    extend(movements, sf::Vector2i(0, 1));
+    extend(movements, sf::Vector2i(0, -1));
 
     return movements;
 }
@@ -106,155 +76,28 @@ std::vector<sf::Vector2i> KnightPiece::getPossibleMoves() {
 std::vector<sf::Vector2i> BishopPiece::getPossibleMoves() {
     std::vector<sf::Vector2i> movements;
 
-    // Up right
-    for (int i = 1; i < 8; i++) {
-        sf::Vector2i toCheck(i, i);
-
-        if (!isValid(currentNode + toCheck) || isFriend(currentNode + toCheck)) break;
-        else if (isEmpty(currentNode + toCheck)) movements.push_back(toCheck);
-        else if (isEnemy(currentNode + toCheck)) {
-            movements.push_back(toCheck);
-            break;
-        }
-    }
-
-    // Up Left
-    for (int i = 1; i < 8; i++) {
-        sf::Vector2i toCheck(-i, i);
-
-        if (!isValid(currentNode + toCheck) || isFriend(currentNode + toCheck)) break;
-        else if (isEmpty(currentNode + toCheck)) movements.push_back(toCheck);
-        else if (isEnemy(currentNode + toCheck)) {
-            movements.push_back(toCheck);
-            break;
-        }
-    }
-
-    // Down right
-    for (int i = 1; i < 8; i++) {
-        sf::Vector2i toCheck(i, -i);
-
-        if (!isValid(currentNode + toCheck) || isFriend(currentNode + toCheck)) break;
-        else if (isEmpty(currentNode + toCheck)) movements.push_back(toCheck);
-        else if (isEnemy(currentNode + toCheck)) {
-            movements.push_back(toCheck);
-            break;
-        }
-    }
-
-    // Down left
-    for (int i = 1; i < 8; i++) {
-        sf::Vector2i toCheck(-i, -i);
-
-        if (!isValid(currentNode + toCheck) || isFriend(currentNode + toCheck)) break;
-        else if (isEmpty(currentNode + toCheck)) movements.push_back(toCheck);
-        else if (isEnemy(currentNode + toCheck)) {
-            movements.push_back(toCheck);
-            break;
-        }
-    }
+    extend(movements, sf::Vector2i(1, 1));
+    extend(movements, sf::Vector2i(-1, 1));
+    extend(movements, sf::Vector2i(1, -1));
+    extend(movements, sf::Vector2i(-1, -1));
 
     return movements;
 }
 
+
+
 std::vector<sf::Vector2i> QueenPiece::getPossibleMoves() {
     std::vector<sf::Vector2i> movements;
 
-    // Right
-    for (int i = 1; i < 8; i++) {
-        sf::Vector2i toCheck(i, 0);
+    extend(movements, sf::Vector2i(1, 0));
+    extend(movements, sf::Vector2i(-1, 0));
+    extend(movements, sf::Vector2i(0, 1));
+    extend(movements, sf::Vector2i(0, -1));
 
-        if (!isValid(currentNode + toCheck) || isFriend(currentNode + toCheck)) break;
-        else if (isEmpty(currentNode + toCheck)) movements.push_back(toCheck);
-        else if (isEnemy(currentNode + toCheck)) {
-            movements.push_back(toCheck);
-            break;
-        }
-    }
-
-    // Left
-    for (int i = 1; i < 8; i++) {
-        sf::Vector2i toCheck(-i, 0);
-
-        if (!isValid(currentNode + toCheck) || isFriend(currentNode + toCheck)) break;
-        else if (isEmpty(currentNode + toCheck)) movements.push_back(toCheck);
-        else if (isEnemy(currentNode + toCheck)) {
-            movements.push_back(toCheck);
-            break;
-        }
-    }
-
-    // Up
-    for (int i = 1; i < 8; i++) {
-        sf::Vector2i toCheck(0, i);
-
-        if (!isValid(currentNode + toCheck) || isFriend(currentNode + toCheck)) break;
-        else if (isEmpty(currentNode + toCheck)) movements.push_back(toCheck);
-        else if (isEnemy(currentNode + toCheck)) {
-            movements.push_back(toCheck);
-            break;
-        }
-    }
-
-    // Down
-    for (int i = 1; i < 8; i++) {
-        sf::Vector2i toCheck(0, -i);
-
-        if (!isValid(currentNode + toCheck) || isFriend(currentNode + toCheck)) break;
-        else if (isEmpty(currentNode + toCheck)) movements.push_back(toCheck);
-        else if (isEnemy(currentNode + toCheck)) {
-            movements.push_back(toCheck);
-            break;
-        }
-    }
-
-    // Up right
-    for (int i = 1; i < 8; i++) {
-        sf::Vector2i toCheck(i, i);
-
-        if (!isValid(currentNode + toCheck) || isFriend(currentNode + toCheck)) break;
-        else if (isEmpty(currentNode + toCheck)) movements.push_back(toCheck);
-        else if (isEnemy(currentNode + toCheck)) {
-            movements.push_back(toCheck);
-            break;
-        }
-    }
-
-    // Up Left
-    for (int i = 1; i < 8; i++) {
-        sf::Vector2i toCheck(-i, i);
-
-        if (!isValid(currentNode + toCheck) || isFriend(currentNode + toCheck)) break;
-        else if (isEmpty(currentNode + toCheck)) movements.push_back(toCheck);
-        else if (isEnemy(currentNode + toCheck)) {
-            movements.push_back(toCheck);
-            break;
-        }
-    }
-
-    // Down right
-    for (int i = 1; i < 8; i++) {
-        sf::Vector2i toCheck(i, -i);
-
-        if (!isValid(currentNode + toCheck) || isFriend(currentNode + toCheck)) break;
-        else if (isEmpty(currentNode + toCheck)) movements.push_back(toCheck);
-        else if (isEnemy(currentNode + toCheck)) {
-            movements.push_back(toCheck);
-            break;
-        }
-    }
-
-    // Down left
-    for (int i = 1; i < 8; i++) {
-        sf::Vector2i toCheck(-i, -i);
-
-        if (!isValid(currentNode + toCheck) || isFriend(currentNode + toCheck)) break;
-        else if (isEmpty(currentNode + toCheck)) movements.push_back(toCheck);
-        else if (isEnemy(currentNode + toCheck)) {
-            movements.push_back(toCheck);
-            break;
-        }
-    }
+    extend(movements, sf::Vector2i(1, 1));
+    extend(movements, sf::Vector2i(-1, 1));
+    extend(movements, sf::Vector2i(1, -1));
+    extend(movements, sf::Vector2i(-1, -1));
 
     return movements;
 }
