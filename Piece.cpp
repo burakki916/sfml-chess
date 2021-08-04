@@ -89,17 +89,6 @@ bool Piece::isMoveValid(sf::Vector2i delta) {
     return false;
 }
 
-/*
-PieceLogic* Piece::getPieceLogic() {
-    return pieceLogic;
-}
-
-bool Piece::setPieceLogic(PieceLogic& newLogic) {
-    pieceLogic = &newLogic;
-    return true; 
-}
-*/
-
 PieceTypes Piece::getType() {
     return type; 
 }
@@ -117,13 +106,12 @@ void Piece::setColor(PieceColors newColor) {
     color = newColor; 
 }
 
-// Flips for black
-sf::Vector2i Piece::flip(sf::Vector2i toFlip) {
+sf::Vector2i Piece::flip(sf::Vector2i toFlipDirection) {
     if (getColor() == PieceColors::black) {
-        return sf::Vector2i(toFlip.x, -toFlip.y);
+        return sf::Vector2i(toFlipDirection.x, -toFlipDirection.y);
     }
 
-    return toFlip;
+    return toFlipDirection;
 }
 
 sf::Sprite* Piece::getSprite() {
@@ -138,10 +126,6 @@ void Piece::setCurrentNode(sf::Vector2i newCurentNode) {
     currentNode = newCurentNode;
 }
 
-/*
-sf::Vector2i Piece::getPosition(){
-    return position; 
-}*/
 
 void Piece::updateSprite() {
     sprite.setPosition(sf::Vector2f(currentNode.x * ChessScreen::tileSize.x, (7 - currentNode.y) * ChessScreen::tileSize.y));

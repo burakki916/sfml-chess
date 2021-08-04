@@ -41,11 +41,9 @@ void Game::selectPiece(sf::Vector2i thisNode) {
 	// If click was on a piece and the piece is the current turn's color
 	if (clickedPiece != NULL && clickedPiece->getColor() == currentTurn) {
 		Game::selectedPiece = clickedPiece;
-		//Game::selectedPiece->getSprite()->setColor(sf::Color(0, 0, 0));
 		//clickedPiece.highlightMoves(); // Highlight possible moves
 	}	
 	else {
-		//Game::selectedPiece->getSprite()->setColor(sf::Color(0, 0, 0));
 		Game::selectedPiece = NULL;
 		//clickedPiece.unHighlightMoves();
 	}

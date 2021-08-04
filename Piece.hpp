@@ -20,7 +20,7 @@ class Piece {
 	public:
         Piece();
 
-        // Static Members 
+        // == Static Members ==
 
 		static Piece* board[8][8];
 		static std::vector<Piece*> pieces;
@@ -34,19 +34,21 @@ class Piece {
 		static Piece* getFromScreenPosition(sf::Vector2i screenPosition);
 		static sf::Vector2i getNodeFromScreenPosition(sf::Vector2i screenPosition);
 
-		// Core logic 
+		// == Core logic ==
 
-		bool attemptMove(sf::Vector2i deltaXY);
+		// Flip direction vector based on color
+		sf::Vector2i flip(sf::Vector2i toFlipDirection);
+
 		bool isEnemy(sf::Vector2i atNode);
 		bool isFriend(sf::Vector2i atNode);
 		static bool isEmpty(sf::Vector2i atNode);
 		static bool isValid(sf::Vector2i atNode);
 
 		bool isMoveValid(sf::Vector2i delta);
+		bool attemptMove(sf::Vector2i deltaXY);
 		virtual std::vector<sf::Vector2i> getPossibleMoves();	
 
-
-        // Object members 
+        // == Object members ==
 
 		void updateSprite();
 
@@ -54,8 +56,7 @@ class Piece {
         bool setType(PieceTypes newType); 
 
 		PieceColors getColor();
-        void setColor(PieceColors newColor); 
-		sf::Vector2i flip(sf::Vector2i toFlip);
+        void setColor(PieceColors newColor); 	
 
 		sf::Sprite* getSprite();
         virtual void setSpriteTex() {}
@@ -72,6 +73,7 @@ class Piece {
 		PieceColors color = PieceColors::black;
 		sf::Vector2i currentNode = sf::Vector2i(0, 0);
 
+		// Helper function for getPossibleMoves
 		void extend(std::vector<sf::Vector2i> &movements, sf::Vector2i direction);
     
     private: 
