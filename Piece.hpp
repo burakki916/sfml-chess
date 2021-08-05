@@ -50,11 +50,9 @@ class Piece {
 		bool isMoveValid(sf::Vector2i delta);
 		bool attemptMove(sf::Vector2i deltaXY);
 		virtual std::vector<sf::Vector2i> getPossibleMoves();	
-
-		//bool willCheckSelf();
-		//bool didCheckEnemy();
-		//bool didCheckMateEnemy();
 		
+		static bool isInCheck(PieceColors color);
+		static bool isInCheckMate(PieceColors color);
 		std::vector<sf::Vector2i> keepKingSafe(std::vector<sf::Vector2i> &movements);
 		
 		void highlightPossibleMoves();

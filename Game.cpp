@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Game.hpp"
 #include "Window.hpp"
 #include "ChessScreen.hpp"
@@ -58,8 +59,16 @@ void Game::onClick(EventInfo *info) {
 		// If there is a selected piece and move of it is successful
 		if (Game::selectedPiece != NULL && Game::selectedPiece->attemptMove(thisNode)) {
 			selectedPiece = NULL;
+			
 			if (currentTurn == PieceColors::white) currentTurn = PieceColors::black;
 			else currentTurn = PieceColors::white;
+
+			if (Piece::isInCheckMate(currentTurn)) {
+				std::cout << "In check mate!" << std::endl;
+			}
+			else if (Piece::isInCheck(currentTurn)) {
+				std::cout << "In check!" << std::endl;
+			}
 		}
 		else { 
 			selectPiece(thisNode);
@@ -68,11 +77,13 @@ void Game::onClick(EventInfo *info) {
 }
 
 void Game::onCheck(EventInfo *info) {
+	std::cout << "In check!" << std::endl;
 	// Alert the player
 	// Moves are restricted to the ones that would get out of check
 }
 
 void Game::onCheckMate(EventInfo *info) {
+	std::cout << "In mate!" << std::endl;
 	// Show game over text/menu/stats
 	// Option to retart or return to menu
 }

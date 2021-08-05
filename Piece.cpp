@@ -157,6 +157,18 @@ bool Piece::attemptMove(sf::Vector2i toNode) {
         board[currentNode.y][currentNode.x] = NULL;
         currentNode.x += deltaXY.x;
         currentNode.y += deltaXY.y;
+
+        Piece* atPiece = board[currentNode.y][currentNode.x];
+        if (atPiece != NULL) { // Kill current piece
+            for (auto i = pieces.begin(); i != pieces.end(); ++i) {
+                if (atPiece == *i) {
+                    pieces.erase(i);
+                    delete board[currentNode.y][currentNode.x];
+                    break;
+                }  
+            }
+        }
+        
         board[currentNode.y][currentNode.x] = this;
 
         hasMoved = true;
