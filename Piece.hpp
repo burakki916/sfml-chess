@@ -24,6 +24,7 @@ class Piece {
 
 		static Piece* board[8][8];
 		static std::vector<Piece*> pieces;
+
 		static sf::Vector2i spriteTexDem;
 		static sf::Color enemyHighlight;
 		static sf::Color emptyHighlight;
@@ -59,6 +60,7 @@ class Piece {
 
         // == Object members ==
 
+		// Move sprite to current node
 		void updateSprite();
 
 		PieceTypes getType();

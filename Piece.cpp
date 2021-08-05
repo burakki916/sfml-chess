@@ -35,8 +35,8 @@ void Piece::render() {
 }
 
 sf::Vector2i Piece::getNodeFromScreenPosition(sf::Vector2i screenPosition) {
-    int row = 7 - std::floor(screenPosition.y / ChessScreen::tileSize.y);
-    int column = std::floor(screenPosition.x / ChessScreen::tileSize.x);
+    int row = 7 - std::floor(screenPosition.y / ChessScreen::getTileSilze().y);
+    int column = std::floor(screenPosition.x / ChessScreen::getTileSilze().x);
     return sf::Vector2i(column, row);
 }
 
@@ -147,7 +147,7 @@ void Piece::setCurrentNode(sf::Vector2i newCurentNode) {
 
 
 void Piece::updateSprite() {
-    sprite.setPosition(sf::Vector2f(currentNode.x * ChessScreen::tileSize.x, (7 - currentNode.y) * ChessScreen::tileSize.y));
+    sprite.setPosition(sf::Vector2f(currentNode.x * ChessScreen::getTileSilze().x, (7 - currentNode.y) * ChessScreen::getTileSilze().y));
 } 
 
 bool Piece::attemptMove(sf::Vector2i toNode) {

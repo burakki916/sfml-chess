@@ -1,27 +1,20 @@
-#include <iostream>
 #include "Piece.hpp"
 #include "Window.hpp"
 #include "ChessScreen.hpp"
-#include "EventManager.hpp"
 
 sf::Texture ChessScreen::woodTexture;
 sf::Texture ChessScreen::ironTexture;
-sf::RectangleShape ChessScreen::tileContainer[8][8];
 
 sf::Color ChessScreen::tileColor1 = sf::Color(50, 28, 12);
 sf::Color ChessScreen::tileColor2 = sf::Color(160, 120, 70);
-sf::Color ChessScreen::selectedColor = sf::Color(255, 255, 255);
 sf::Vector2f ChessScreen::tileSize; 
+
+sf::RectangleShape ChessScreen::tileContainer[8][8];
 std::vector<SelectedTile> ChessScreen::selectedTiles;
 
 void ChessScreen::initialize() {
-    if (!woodTexture.loadFromFile("MCWood.jpg")) {
-        std::cout << "ERROR: Can't find texture : \"MCWood.jpg\"" << std::endl;
-    }
-
-    if (!ironTexture.loadFromFile("IronBlock.jpg")) {
-        std::cout << "ERROR: Can't find texture : \"IronBlock.jpg\"" << std::endl;
-    }
+    woodTexture.loadFromFile("MCWood.jpg");
+    ironTexture.loadFromFile("IronBlock.jpg");
 
     ChessScreen::setupTiles();
 }
@@ -77,4 +70,8 @@ void ChessScreen::clearHighlightedTiles() {
         thisSelectedTile.obj->setFillColor(thisSelectedTile.color);
         selectedTiles.pop_back(); 
     }
+}
+
+sf::Vector2f ChessScreen::getTileSilze() {
+    return ChessScreen::tileSize;
 }

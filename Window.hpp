@@ -1,5 +1,5 @@
 #pragma once
-#include <string>
+
 #include <SFML/Graphics.hpp>
 #include "EventManager.hpp"
 

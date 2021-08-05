@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "Piece.hpp"
+
 class ScreenManager {
 	public:
 		static void renderScreen();

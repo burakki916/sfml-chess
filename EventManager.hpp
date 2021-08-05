@@ -1,13 +1,7 @@
 #pragma once
 #include <unordered_map>
 #include <SFML/Window.hpp>
-
 using namespace std;
-
-class TestEventInfo : public sf::Event {
-	public:
-
-};
 
 // EventInfo is passed into every event callback function (from connectToEvent)
 // Ability to provide any necessary information to the callback functions

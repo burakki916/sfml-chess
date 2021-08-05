@@ -1,5 +1,6 @@
+#include <string>
 #include "Window.hpp"
-#include <iostream>
+
 sf::RenderWindow Window::mainWindow;
 
 void Window::initialize() {
@@ -21,7 +22,6 @@ void Window::beginDraw() {
 }
 
 void Window::draw(sf::Drawable& toDraw) {
-	
 	mainWindow.draw(toDraw);
 }
 

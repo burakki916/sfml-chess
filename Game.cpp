@@ -9,17 +9,13 @@ PieceColors Game::currentTurn = PieceColors::white;
 
 void Game::initialize() {
 	Window::initialize();
-
 	ChessScreen::initialize();
 	Piece::initialize();
+
 	Piece::newBoard();
 
 	EventManager::connectToEvent("ClickBoard", &onClick);
 	EventManager::bindInputToEvent("ClickBoard", sf::Event::MouseButtonPressed);
-
-	// Fired by Piece class. Checked after Move/Kill
-	EventManager::connectToEvent("Check", &onCheck);
-	EventManager::connectToEvent("CheckMate", &onCheckMate);
 
 	ScreenManager::setCurrentScreen("ChessScreen");
 }
@@ -35,19 +31,15 @@ void Game::render() {
 	Window::endDraw();
 }
 
-// Select new piece or deselect current piece
 void Game::selectPiece(sf::Vector2i thisNode) {
 	Piece *clickedPiece = Piece::at(thisNode);
 
-	// If click was on a piece and the piece is the current turn's color
 	if (clickedPiece != NULL && clickedPiece->getColor() == currentTurn) {
 		Game::selectedPiece = clickedPiece;
-		selectedPiece->highlightPossibleMoves();
+		Game::selectedPiece->highlightPossibleMoves();
 		ChessScreen::highlightTile(thisNode, sf::Color(0, 180, 0));
 	}	
-	else {
-		Game::selectedPiece = NULL;
-	}
+	else Game::selectedPiece = NULL;
 }
 
 void Game::onClick(EventInfo *info) {
@@ -58,32 +50,26 @@ void Game::onClick(EventInfo *info) {
 
 		// If there is a selected piece and move of it is successful
 		if (Game::selectedPiece != NULL && Game::selectedPiece->attemptMove(thisNode)) {
-			selectedPiece = NULL;
+			Game::selectedPiece = NULL;
 			
-			if (currentTurn == PieceColors::white) currentTurn = PieceColors::black;
-			else currentTurn = PieceColors::white;
+			if (Game::currentTurn == PieceColors::white) Game::currentTurn = PieceColors::black;
+			else Game::currentTurn = PieceColors::white;
 
-			if (Piece::isInCheckMate(currentTurn)) {
-				std::cout << "In check mate!" << std::endl;
-			}
-			else if (Piece::isInCheck(currentTurn)) {
-				std::cout << "In check!" << std::endl;
-			}
+			if (Piece::isInCheckMate(currentTurn)) Game::onCheckMate();
+			else if (Piece::isInCheck(currentTurn)) Game::onCheck();
 		}
-		else { 
-			selectPiece(thisNode);
-		}
+		else Game::selectPiece(thisNode);
 	}
 }
 
-void Game::onCheck(EventInfo *info) {
+void Game::onCheck() {
 	std::cout << "In check!" << std::endl;
 	// Alert the player
 	// Moves are restricted to the ones that would get out of check
 }
 
-void Game::onCheckMate(EventInfo *info) {
-	std::cout << "In mate!" << std::endl;
+void Game::onCheckMate() {
+	std::cout << "In check mate!" << std::endl;
 	// Show game over text/menu/stats
 	// Option to retart or return to menu
 }
