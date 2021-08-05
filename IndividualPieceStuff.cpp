@@ -14,6 +14,61 @@ void Piece::extend(std::vector<sf::Vector2i>& movements, sf::Vector2i direction)
     }
 }
 
+/*
+bool Piece::attemptMove(sf::Vector2i toNode) {
+    sf::Vector2i deltaXY = toNode - currentNode;
+
+    if(isMoveValid(deltaXY)) {
+        board[currentNode.y][currentNode.x] = NULL;
+        currentNode.x += deltaXY.x;
+        currentNode.y += deltaXY.y;
+        board[currentNode.y][currentNode.x] = this;
+
+        hasMoved = true;
+        updateSprite();
+
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+*/
+
+std::vector<sf::Vector2i> Piece::keepKingSafe(std::vector<sf::Vector2i> &movements) {
+    std::vector<sf::Vector2i> safeMovements;
+
+    for (auto &thisMovement : movements) {
+        board[currentNode.y][currentNode.x] = NULL;
+        currentNode.x += thisMovement.x;
+        currentNode.y += thisMovement.y;
+        Piece* pieceCap = board[currentNode.y][currentNode.x];
+        board[currentNode.y][currentNode.x] = this;
+
+        bool thisSafe = true;
+        for (auto &thisPiece : pieces) { // For each piece
+            if (!thisSafe) break;
+            if (thisPiece->getColor() != getColor()) { // If it is an enemy
+                for (auto& thisEnemyMovement : thisPiece->getPossibleMoves()) { // For each of their moves
+                    if (thisPiece->isEnemyKing(thisPiece->getCurrentNode() + thisEnemyMovement)) { // If they kill enemy (our) king
+                        thisSafe = false;
+                        break;
+                    }
+                }
+            }
+        }
+
+        board[currentNode.y][currentNode.x] = pieceCap;
+        currentNode.x -= thisMovement.x;
+        currentNode.y -= thisMovement.y;
+        board[currentNode.y][currentNode.x] = this;
+
+        if (thisSafe) safeMovements.push_back(thisMovement);
+    }
+
+    return safeMovements;
+}
+
 std::vector<sf::Vector2i> PawnPiece::getPossibleMoves() {
     std::vector<sf::Vector2i> movements;
 

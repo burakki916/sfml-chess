@@ -82,9 +82,15 @@ bool Piece::isFriend(sf::Vector2i atNode) {
     return atPiece != NULL && atPiece->getColor() == this->getColor();
 }
 
+bool Piece::isEnemyKing(sf::Vector2i atNode) {
+    Piece* atPiece = board[atNode.y][atNode.x];
+    return atPiece != NULL && atPiece->getColor() != this->getColor() && atPiece->getType() == PieceTypes::king;
+}
+
 bool Piece::isMoveValid(sf::Vector2i delta) {
     // Consider converting possible moves to unordered_set
     std::vector<sf::Vector2i> thisPossibleMoves = getPossibleMoves();
+    thisPossibleMoves = keepKingSafe(thisPossibleMoves);
     for (sf::Vector2i &thisPossibleMove : thisPossibleMoves) {
         if (delta == thisPossibleMove) return true;
     }
@@ -94,6 +100,7 @@ bool Piece::isMoveValid(sf::Vector2i delta) {
 
 void Piece::highlightPossibleMoves() {
     std::vector<sf::Vector2i> thisPossibleMoves = getPossibleMoves();
+    thisPossibleMoves = keepKingSafe(thisPossibleMoves);
     for (sf::Vector2i &thisPossibleMove : thisPossibleMoves) {
         thisPossibleMove = thisPossibleMove + currentNode;
         if (isEnemy(thisPossibleMove)) ChessScreen::highlightTile(thisPossibleMove, enemyHighlight);

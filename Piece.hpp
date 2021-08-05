@@ -45,10 +45,17 @@ class Piece {
 		bool isFriend(sf::Vector2i atNode);
 		static bool isEmpty(sf::Vector2i atNode);
 		static bool isValid(sf::Vector2i atNode);
+		bool isEnemyKing(sf::Vector2i atNode);
 
 		bool isMoveValid(sf::Vector2i delta);
 		bool attemptMove(sf::Vector2i deltaXY);
 		virtual std::vector<sf::Vector2i> getPossibleMoves();	
+
+		//bool willCheckSelf();
+		//bool didCheckEnemy();
+		//bool didCheckMateEnemy();
+		
+		std::vector<sf::Vector2i> keepKingSafe(std::vector<sf::Vector2i> &movements);
 		
 		void highlightPossibleMoves();
 
