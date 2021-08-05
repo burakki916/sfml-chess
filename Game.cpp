@@ -41,11 +41,11 @@ void Game::selectPiece(sf::Vector2i thisNode) {
 	// If click was on a piece and the piece is the current turn's color
 	if (clickedPiece != NULL && clickedPiece->getColor() == currentTurn) {
 		Game::selectedPiece = clickedPiece;
-		//clickedPiece.highlightMoves(); // Highlight possible moves
+		selectedPiece->highlightPossibleMoves();
+		ChessScreen::highlightTile(thisNode, sf::Color(0, 180, 0));
 	}	
 	else {
 		Game::selectedPiece = NULL;
-		//clickedPiece.unHighlightMoves();
 	}
 }
 
@@ -53,7 +53,8 @@ void Game::onClick(EventInfo *info) {
 	if (info->mouseButton.button == sf::Mouse::Left) {
 		int x = info->mouseButton.x, y = info->mouseButton.y;
 		sf::Vector2i thisNode = Piece::getNodeFromScreenPosition(sf::Vector2i(x, y));
-		
+		ChessScreen::clearHighlightedTiles();
+
 		// If there is a selected piece and move of it is successful
 		if (Game::selectedPiece != NULL && Game::selectedPiece->attemptMove(thisNode)) {
 			selectedPiece = NULL;

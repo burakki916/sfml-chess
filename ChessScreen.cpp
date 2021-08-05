@@ -1,26 +1,29 @@
 #include <iostream>
+#include "Piece.hpp"
 #include "Window.hpp"
 #include "ChessScreen.hpp"
 #include "EventManager.hpp"
 
 sf::Texture ChessScreen::woodTexture;
+sf::Texture ChessScreen::ironTexture;
 sf::RectangleShape ChessScreen::tileContainer[8][8];
 
-sf::Color ChessScreen::tileColor1 = sf::Color(50, 30, 29);
-sf::Color ChessScreen::tileColor2 = sf::Color(212, 187, 0);
+sf::Color ChessScreen::tileColor1 = sf::Color(50, 28, 12);
+sf::Color ChessScreen::tileColor2 = sf::Color(160, 120, 70);
 sf::Color ChessScreen::selectedColor = sf::Color(255, 255, 255);
-sf::RectangleShape *ChessScreen::selectedTile = NULL;
-sf::Color ChessScreen::selectedTileOldColor;
 sf::Vector2f ChessScreen::tileSize; 
+std::vector<SelectedTile> ChessScreen::selectedTiles;
+
 void ChessScreen::initialize() {
     if (!woodTexture.loadFromFile("MCWood.jpg")) {
         std::cout << "ERROR: Can't find texture : \"MCWood.jpg\"" << std::endl;
     }
 
-    ChessScreen::setupTiles();
+    if (!ironTexture.loadFromFile("IronBlock.jpg")) {
+        std::cout << "ERROR: Can't find texture : \"IronBlock.jpg\"" << std::endl;
+    }
 
-    EventManager::connectToEvent("ClickTile", &highlightTile);
-    EventManager::bindInputToEvent("ClickTile", sf::Event::MouseButtonPressed);
+    ChessScreen::setupTiles();
 }
 
 void ChessScreen::render() {
@@ -43,28 +46,35 @@ void ChessScreen::setupTiles() {
             else newRect.setFillColor(tileColor2);
 
             newRect.setSize(tileSize);
-            newRect.setPosition(column*tileSize.x, row*tileSize.y);
+            newRect.setPosition(column*tileSize.x, (7-row)*tileSize.y);
             newRect.setTexture(&woodTexture);
             tileContainer[row][column] = newRect;
         }
     }
 }
 
-void ChessScreen::highlightTile(EventInfo *info) {
-    sf::Vector2i mousePos = Window::getMousePosition();
-    
-    sf::Vector2u windowSize = Window::getSize();
-    sf::Vector2f tileSize(windowSize.x / 8, windowSize.y / 8);
+void ChessScreen::highlightTile(sf::Vector2i thisNode, sf::Color thisColor, float transparency) {
+    if (Piece::isValid(thisNode)) {
+        sf::RectangleShape* thisTile = &tileContainer[thisNode.y][thisNode.x];
+        selectedTiles.push_back(SelectedTile(thisTile, thisTile->getFillColor()));
 
-    int row = mousePos.y / tileSize.y;
-    int column = mousePos.x / tileSize.x;
+        thisTile->setTexture(&ironTexture);
+        thisTile->setFillColor(sf::Color(
+            thisColor.r - transparency * (thisColor.r - thisTile->getFillColor().r),
+            thisColor.g - transparency * (thisColor.g - thisTile->getFillColor().g),
+            thisColor.b - transparency * (thisColor.b - thisTile->getFillColor().b)
+        ));
+    }
+}
 
-    if (row >= 0 && row <= 8 && column >= 0 && column <= 8) {
-        if (selectedTile != NULL) {
-            selectedTile->setFillColor(selectedTileOldColor);
-        }
-        selectedTile = &tileContainer[row][column];
-        selectedTileOldColor = selectedTile->getFillColor();
-        selectedTile->setFillColor(selectedColor);
+void ChessScreen::highlightTile(sf::Vector2i thisNode, sf::Color thisColor) {
+    highlightTile(thisNode, thisColor, 0.5f);
+}
+
+void ChessScreen::clearHighlightedTiles() {
+    for (auto &thisSelectedTile : selectedTiles) {
+        thisSelectedTile.obj->setTexture(&woodTexture);
+        thisSelectedTile.obj->setFillColor(thisSelectedTile.color);
+        selectedTiles.pop_back(); 
     }
 }

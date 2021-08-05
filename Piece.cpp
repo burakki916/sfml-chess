@@ -11,6 +11,9 @@ vector<Piece*> Piece::pieces;
 sf::Texture Piece::piecesTexture;
 sf::Vector2i Piece::spriteTexDem = sf::Vector2i(213, 213);
 
+sf::Color Piece::enemyHighlight = sf::Color(255, 50, 50);
+sf::Color Piece::emptyHighlight = sf::Color(25, 125, 255);
+
 void Piece::initialize() {
     piecesTexture.loadFromFile("pieces.png");
 }
@@ -82,11 +85,20 @@ bool Piece::isFriend(sf::Vector2i atNode) {
 bool Piece::isMoveValid(sf::Vector2i delta) {
     // Consider converting possible moves to unordered_set
     std::vector<sf::Vector2i> thisPossibleMoves = getPossibleMoves();
-    for (sf::Vector2i thisPossibleMove : thisPossibleMoves) {
+    for (sf::Vector2i &thisPossibleMove : thisPossibleMoves) {
         if (delta == thisPossibleMove) return true;
     }
 
     return false;
+}
+
+void Piece::highlightPossibleMoves() {
+    std::vector<sf::Vector2i> thisPossibleMoves = getPossibleMoves();
+    for (sf::Vector2i &thisPossibleMove : thisPossibleMoves) {
+        thisPossibleMove = thisPossibleMove + currentNode;
+        if (isEnemy(thisPossibleMove)) ChessScreen::highlightTile(thisPossibleMove, enemyHighlight);
+        else ChessScreen::highlightTile(thisPossibleMove, emptyHighlight);
+    }
 }
 
 PieceTypes Piece::getType() {

@@ -25,6 +25,8 @@ class Piece {
 		static Piece* board[8][8];
 		static std::vector<Piece*> pieces;
 		static sf::Vector2i spriteTexDem;
+		static sf::Color enemyHighlight;
+		static sf::Color emptyHighlight;
 
         static void initialize();
         static void render();   
@@ -47,6 +49,8 @@ class Piece {
 		bool isMoveValid(sf::Vector2i delta);
 		bool attemptMove(sf::Vector2i deltaXY);
 		virtual std::vector<sf::Vector2i> getPossibleMoves();	
+		
+		void highlightPossibleMoves();
 
         // == Object members ==
 
