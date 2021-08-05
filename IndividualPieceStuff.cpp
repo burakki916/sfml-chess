@@ -52,9 +52,19 @@ std::vector<sf::Vector2i> Piece::keepKingSafe(std::vector<sf::Vector2i> &movemen
         Piece* pieceCap = board[currentNode.y][currentNode.x];
         board[currentNode.y][currentNode.x] = this;
 
+        if (pieceCap != NULL) { // Kill current piece
+            for (auto i = pieces.begin(); i != pieces.end(); ++i) {
+                if (pieceCap == *i) {
+                    pieces.erase(i);
+                    break;
+                }
+            }
+        }
+
         if (!Piece::isInCheck(getColor())) safeMovements.push_back(thisMovement);
 
         // Move back
+        if (pieceCap != NULL) pieces.push_back(pieceCap);
         board[currentNode.y][currentNode.x] = pieceCap;
         currentNode.x -= thisMovement.x;
         currentNode.y -= thisMovement.y;
