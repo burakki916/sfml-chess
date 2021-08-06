@@ -20,18 +20,9 @@ enum class PieceColors {
 
 class Piece {
 	public:
-        Piece();
-
-        // == Static Members ==
-
 		typedef std::deque<sf::Vector2i> Moveset;
 
-		static Piece* board[8][8];
-		static std::unordered_set<Piece*> pieces;
-
-		static sf::Vector2i spriteTexDem;
-		static sf::Color enemyHighlight;
-		static sf::Color emptyHighlight;
+        // == Main static members == //
 
         static void initialize();
         static void render();   
@@ -41,10 +32,9 @@ class Piece {
 		static Piece* getFromScreenPosition(sf::Vector2i screenPosition);
 		static sf::Vector2i getNodeFromScreenPosition(sf::Vector2i screenPosition);
 
-		// == Core logic ==
+		// == Core logic == //
 
-		// Flip direction vector based on color
-		sf::Vector2i flip(sf::Vector2i toFlipDirection);
+		sf::Vector2i flip(sf::Vector2i toFlipDirection); // Flip direction vector based on color
 
 		bool isEnemy(sf::Vector2i atNode);
 		bool isFriend(sf::Vector2i atNode);
@@ -62,13 +52,11 @@ class Piece {
 		
 		void highlightPossibleMoves();
 
-        // == Object members ==
+        // == Object members == //
 
-		// Move sprite to current node
-		void updateSprite();
+		Piece();
 
-		PieceTypes getType();
-        bool setType(PieceTypes newType); 
+		virtual PieceTypes getType();
 
 		PieceColors getColor();
         void setColor(PieceColors newColor); 	
@@ -81,6 +69,7 @@ class Piece {
 
     protected: 
 		static sf::Texture piecesTexture;
+		static sf::Vector2i spriteTexDem;
 
 		sf::Sprite sprite;
 		bool hasMoved = false;
@@ -88,46 +77,83 @@ class Piece {
 		PieceColors color = PieceColors::black;
 		sf::Vector2i currentNode = sf::Vector2i(0, 0);
 
-		// Helper function for getPossibleMoves
-		void extend(Piece::Moveset &movements, sf::Vector2i direction);
+		void updateSprite(); // Move sprite to current node
+		void extend(Piece::Moveset &movements, sf::Vector2i direction); // Helper function for getPossibleMoves
     
     private: 
+		static Piece* board[8][8];
+		static std::unordered_set<Piece*> pieces;
+
+		static sf::Color enemyHighlight;
+		static sf::Color emptyHighlight;
+		static sf::Color colors[2];
+
 		static void deletePieces();
 		static void genPiecesOfColor(PieceColors color); 
 };
 
 class PawnPiece : public Piece {
-	public: 
+	public:
+		PawnPiece() {
+			type = PieceTypes::pawn;
+			setSpriteTex();
+		}
+
 		void setSpriteTex() override; 
 		Piece::Moveset getPossibleMoves() override;
 };
 
 class RookPiece : public Piece {
 	public: 
+		RookPiece() {
+			type = PieceTypes::rook;
+			setSpriteTex();
+		}
+
 		void setSpriteTex() override; 
 		Piece::Moveset getPossibleMoves() override;
 };
 
 class KnightPiece : public Piece {
 	public: 
+		KnightPiece() {
+			type = PieceTypes::knight;
+			setSpriteTex();
+		}
+
 		void setSpriteTex() override; 
 		Piece::Moveset getPossibleMoves() override;
 };
 
 class BishopPiece : public Piece {
 	public: 
+		BishopPiece() {
+			type = PieceTypes::bishop;
+			setSpriteTex();
+		}
+
 		void setSpriteTex() override; 
 		Piece::Moveset getPossibleMoves() override;
 };
 
 class QueenPiece : public Piece {
 	public: 
+		QueenPiece() {
+			type = PieceTypes::queen;
+			setSpriteTex();
+		}
+
 		void setSpriteTex() override; 
 		Piece::Moveset getPossibleMoves() override;
 };
 
 class KingPiece : public Piece {
 	public: 
+		KingPiece() {
+			type = PieceTypes::king;
+			setSpriteTex();
+		}
+
 		void setSpriteTex() override; 
 		Piece::Moveset getPossibleMoves() override;
 };
