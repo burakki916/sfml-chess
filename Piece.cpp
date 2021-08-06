@@ -5,7 +5,8 @@
 /* ----------------- Static Definitions ------------------- */
 
 Piece* Piece::board[8][8];
-vector<Piece*> Piece::pieces;
+std::unordered_set<Piece*> Piece::pieces;
+
 sf::Texture Piece::piecesTexture;
 sf::Vector2i Piece::spriteTexDem = sf::Vector2i(213, 213);
 
@@ -86,7 +87,6 @@ bool Piece::isEnemyKing(sf::Vector2i atNode) {
 }
 
 bool Piece::isMoveValid(sf::Vector2i delta) {
-    // Consider converting possible moves to unordered_set
     Piece::Moveset thisPossibleMoves = getPossibleMoves();
     keepKingSafe(thisPossibleMoves);
     for (sf::Vector2i &thisPossibleMove : thisPossibleMoves) {
@@ -157,14 +157,10 @@ bool Piece::attemptMove(sf::Vector2i toNode) {
         currentNode.y += deltaXY.y;
 
         Piece* atPiece = board[currentNode.y][currentNode.x];
+
         if (atPiece != NULL) { // Kill current piece
-            for (auto i = pieces.begin(); i != pieces.end(); ++i) {
-                if (atPiece == *i) {
-                    pieces.erase(i);
-                    delete board[currentNode.y][currentNode.x];
-                    break;
-                }  
-            }
+            pieces.erase(pieces.find(atPiece));
+            delete board[currentNode.y][currentNode.x];
         }
         
         board[currentNode.y][currentNode.x] = this;
@@ -225,21 +221,18 @@ void Piece::genPiecesOfColor(PieceColors color) {
                 Piece::board[7-j][i] = curPiece; 
             }
             curPiece->setSpriteTex();
-            Piece::pieces.push_back(curPiece);
+            Piece::pieces.emplace(curPiece);
             curPiece->updateSprite();
         }
     }
 }
 
 void Piece::deletePieces() {
-    for(auto &itr : Piece::pieces){
-        delete itr;
-        pieces.pop_back(); 
-    }
+    pieces.clear();
 
     for(int i =0;i<8;i++){
         for(int j = 0; j<8;j++){
-            Piece::board[i][j] = nullptr;
+            delete Piece::board[i][j];
         }
     }
 }

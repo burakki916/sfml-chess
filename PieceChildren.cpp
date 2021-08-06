@@ -52,18 +52,13 @@ void Piece::keepKingSafe(Piece::Moveset &movements) {
         board[currentNode.y][currentNode.x] = this;
 
         if (pieceCap != NULL) { // Would kill piece
-            for (auto i = pieces.begin(); i != pieces.end(); ++i) {
-                if (pieceCap == *i) {
-                    pieces.erase(i);
-                    break;
-                }
-            }
+            pieces.erase(pieces.find(pieceCap));
         }
 
         bool allowsKingDeath = Piece::isInCheck(getColor());
 
         // Move back
-        if (pieceCap != NULL) pieces.push_back(pieceCap);
+        if (pieceCap != NULL) pieces.emplace(pieceCap);
         board[currentNode.y][currentNode.x] = pieceCap;
         currentNode.x -= thisMovement->x;
         currentNode.y -= thisMovement->y;

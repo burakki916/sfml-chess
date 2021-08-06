@@ -1,6 +1,7 @@
 #pragma once
 #include <deque>
 #include <vector>
+#include <unordered_set>
 #include "SFML/Graphics.hpp"
 
 enum class PieceTypes {
@@ -26,7 +27,7 @@ class Piece {
 		typedef std::deque<sf::Vector2i> Moveset;
 
 		static Piece* board[8][8];
-		static std::vector<Piece*> pieces;
+		static std::unordered_set<Piece*> pieces;
 
 		static sf::Vector2i spriteTexDem;
 		static sf::Color enemyHighlight;
