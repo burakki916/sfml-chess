@@ -9,7 +9,7 @@ Piece::Moveset PawnPiece::getPossibleMoves() {
     }
 
     sf::Vector2i doubleForward = flip(sf::Vector2i(0, 2));
-    if (!hasMoved && isValid(currentNode + doubleForward) && !isFriend(currentNode + doubleForward)) {
+    if (movements.size() > 0 && !hasMoved && isValid(currentNode + doubleForward) && isEmpty(currentNode + doubleForward)) {
         movements.push_back(doubleForward);
     }
 
