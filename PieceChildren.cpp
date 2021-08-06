@@ -1,7 +1,6 @@
 #include "Piece.hpp"
-#include <iostream>
 
-void Piece::extend(std::vector<sf::Vector2i>& movements, sf::Vector2i direction) {
+void Piece::extend(Piece::Moveset& movements, sf::Vector2i direction) {
     for (int i = 1; i < 8; i++) {
         sf::Vector2i toCheck(direction.x * i, direction.y * i);
 
@@ -31,8 +30,9 @@ bool Piece::isInCheck(PieceColors color) {
 bool Piece::isInCheckMate(PieceColors color) {
     for (auto& thisPiece : pieces) { // For each piece
         if (thisPiece->getColor() == color) { // If it ours
-            std::vector<sf::Vector2i> possibleMoves = thisPiece->getPossibleMoves();
-            if (thisPiece->keepKingSafe(possibleMoves).size() > 0) { // If it has a move
+            Piece::Moveset possibleMoves = thisPiece->getPossibleMoves();
+            thisPiece->keepKingSafe(possibleMoves);
+            if (possibleMoves.size() > 0) { // If it has a move
                 return false;
             }
         }
@@ -41,18 +41,17 @@ bool Piece::isInCheckMate(PieceColors color) {
     return true;
 }
 
-std::vector<sf::Vector2i> Piece::keepKingSafe(std::vector<sf::Vector2i> &movements) {
-    std::vector<sf::Vector2i> safeMovements;
-
-    for (auto &thisMovement : movements) {
+void Piece::keepKingSafe(Piece::Moveset &movements) {
+    auto thisMovement = movements.begin();
+    while (thisMovement != movements.end()) {
         // Temporary move to location
         board[currentNode.y][currentNode.x] = NULL;
-        currentNode.x += thisMovement.x;
-        currentNode.y += thisMovement.y;
+        currentNode.x += thisMovement->x;
+        currentNode.y += thisMovement->y;
         Piece* pieceCap = board[currentNode.y][currentNode.x];
         board[currentNode.y][currentNode.x] = this;
 
-        if (pieceCap != NULL) { // Kill current piece
+        if (pieceCap != NULL) { // Would kill piece
             for (auto i = pieces.begin(); i != pieces.end(); ++i) {
                 if (pieceCap == *i) {
                     pieces.erase(i);
@@ -61,21 +60,22 @@ std::vector<sf::Vector2i> Piece::keepKingSafe(std::vector<sf::Vector2i> &movemen
             }
         }
 
-        if (!Piece::isInCheck(getColor())) safeMovements.push_back(thisMovement);
+        bool allowsKingDeath = Piece::isInCheck(getColor());
 
         // Move back
         if (pieceCap != NULL) pieces.push_back(pieceCap);
         board[currentNode.y][currentNode.x] = pieceCap;
-        currentNode.x -= thisMovement.x;
-        currentNode.y -= thisMovement.y;
+        currentNode.x -= thisMovement->x;
+        currentNode.y -= thisMovement->y;
         board[currentNode.y][currentNode.x] = this;
-    }
 
-    return safeMovements;
+        if (allowsKingDeath) thisMovement = movements.erase(thisMovement);
+        else thisMovement++;
+    }
 }
 
-std::vector<sf::Vector2i> PawnPiece::getPossibleMoves() {
-    std::vector<sf::Vector2i> movements;
+Piece::Moveset PawnPiece::getPossibleMoves() {
+    Piece::Moveset movements;
 
     sf::Vector2i forward = flip(sf::Vector2i(0, 1));
     if (isValid(currentNode + forward) && isEmpty(currentNode + forward)) {
@@ -100,8 +100,8 @@ std::vector<sf::Vector2i> PawnPiece::getPossibleMoves() {
     return movements;
 }
 
-std::vector<sf::Vector2i> RookPiece::getPossibleMoves() {
-    std::vector<sf::Vector2i> movements;
+Piece::Moveset RookPiece::getPossibleMoves() {
+    Piece::Moveset movements;
 
     extend(movements, sf::Vector2i(1, 0));
     extend(movements, sf::Vector2i(-1, 0));
@@ -111,8 +111,8 @@ std::vector<sf::Vector2i> RookPiece::getPossibleMoves() {
     return movements;
 }
 
-std::vector<sf::Vector2i> KnightPiece::getPossibleMoves() {
-    std::vector<sf::Vector2i> movements;
+Piece::Moveset KnightPiece::getPossibleMoves() {
+    Piece::Moveset movements;
     std::vector<sf::Vector2i> toCheck = {
         sf::Vector2i(2, 1),
         sf::Vector2i(2, -1),
@@ -133,8 +133,8 @@ std::vector<sf::Vector2i> KnightPiece::getPossibleMoves() {
     return movements;
 }
 
-std::vector<sf::Vector2i> BishopPiece::getPossibleMoves() {
-    std::vector<sf::Vector2i> movements;
+Piece::Moveset BishopPiece::getPossibleMoves() {
+    Piece::Moveset movements;
 
     extend(movements, sf::Vector2i(1, 1));
     extend(movements, sf::Vector2i(-1, 1));
@@ -146,8 +146,8 @@ std::vector<sf::Vector2i> BishopPiece::getPossibleMoves() {
 
 
 
-std::vector<sf::Vector2i> QueenPiece::getPossibleMoves() {
-    std::vector<sf::Vector2i> movements;
+Piece::Moveset QueenPiece::getPossibleMoves() {
+    Piece::Moveset movements;
 
     extend(movements, sf::Vector2i(1, 0));
     extend(movements, sf::Vector2i(-1, 0));
@@ -162,9 +162,8 @@ std::vector<sf::Vector2i> QueenPiece::getPossibleMoves() {
     return movements;
 }
 
-
-std::vector<sf::Vector2i> KingPiece::getPossibleMoves() {
-    std::vector<sf::Vector2i> movements;
+Piece::Moveset KingPiece::getPossibleMoves() {
+    Piece::Moveset movements;
     std::vector<sf::Vector2i> toCheck = {
         sf::Vector2i(1, 0),
         sf::Vector2i(1, 1),

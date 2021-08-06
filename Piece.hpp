@@ -1,4 +1,5 @@
 #pragma once
+#include <deque>
 #include <vector>
 #include "SFML/Graphics.hpp"
 
@@ -21,6 +22,8 @@ class Piece {
         Piece();
 
         // == Static Members ==
+
+		typedef std::deque<sf::Vector2i> Moveset;
 
 		static Piece* board[8][8];
 		static std::vector<Piece*> pieces;
@@ -50,11 +53,11 @@ class Piece {
 
 		bool isMoveValid(sf::Vector2i delta);
 		bool attemptMove(sf::Vector2i deltaXY);
-		virtual std::vector<sf::Vector2i> getPossibleMoves();	
+		virtual Piece::Moveset getPossibleMoves();
 		
 		static bool isInCheck(PieceColors color);
 		static bool isInCheckMate(PieceColors color);
-		std::vector<sf::Vector2i> keepKingSafe(std::vector<sf::Vector2i> &movements);
+		void keepKingSafe(Piece::Moveset&movements);
 		
 		void highlightPossibleMoves();
 
@@ -85,7 +88,7 @@ class Piece {
 		sf::Vector2i currentNode = sf::Vector2i(0, 0);
 
 		// Helper function for getPossibleMoves
-		void extend(std::vector<sf::Vector2i> &movements, sf::Vector2i direction);
+		void extend(Piece::Moveset &movements, sf::Vector2i direction);
     
     private: 
 		static void deletePieces();
@@ -95,35 +98,35 @@ class Piece {
 class PawnPiece : public Piece {
 	public: 
 		void setSpriteTex() override; 
-		std::vector<sf::Vector2i> getPossibleMoves() override;
+		Piece::Moveset getPossibleMoves() override;
 };
 
 class RookPiece : public Piece {
 	public: 
 		void setSpriteTex() override; 
-		std::vector<sf::Vector2i> getPossibleMoves() override;
+		Piece::Moveset getPossibleMoves() override;
 };
 
 class KnightPiece : public Piece {
 	public: 
 		void setSpriteTex() override; 
-		std::vector<sf::Vector2i> getPossibleMoves() override;
+		Piece::Moveset getPossibleMoves() override;
 };
 
 class BishopPiece : public Piece {
 	public: 
 		void setSpriteTex() override; 
-		std::vector<sf::Vector2i> getPossibleMoves() override;
+		Piece::Moveset getPossibleMoves() override;
 };
 
 class QueenPiece : public Piece {
 	public: 
 		void setSpriteTex() override; 
-		std::vector<sf::Vector2i> getPossibleMoves() override;
+		Piece::Moveset getPossibleMoves() override;
 };
 
 class KingPiece : public Piece {
 	public: 
 		void setSpriteTex() override; 
-		std::vector<sf::Vector2i> getPossibleMoves() override;
+		Piece::Moveset getPossibleMoves() override;
 };

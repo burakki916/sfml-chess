@@ -1,5 +1,3 @@
-#include <cmath>
-#include <iostream>
 #include "Piece.hpp"  
 #include "Window.hpp"
 #include "ChessScreen.hpp"
@@ -63,8 +61,8 @@ Piece::Piece() {
     sprite.setScale(scaleWidth, scaleWidth);
 }
 
-std::vector<sf::Vector2i> Piece::getPossibleMoves() {
-    std::vector<sf::Vector2i> blank;
+Piece::Moveset Piece::getPossibleMoves() {
+    Piece::Moveset blank;
     return blank;
 }
 
@@ -89,8 +87,8 @@ bool Piece::isEnemyKing(sf::Vector2i atNode) {
 
 bool Piece::isMoveValid(sf::Vector2i delta) {
     // Consider converting possible moves to unordered_set
-    std::vector<sf::Vector2i> thisPossibleMoves = getPossibleMoves();
-    thisPossibleMoves = keepKingSafe(thisPossibleMoves);
+    Piece::Moveset thisPossibleMoves = getPossibleMoves();
+    keepKingSafe(thisPossibleMoves);
     for (sf::Vector2i &thisPossibleMove : thisPossibleMoves) {
         if (delta == thisPossibleMove) return true;
     }
@@ -99,8 +97,8 @@ bool Piece::isMoveValid(sf::Vector2i delta) {
 }
 
 void Piece::highlightPossibleMoves() {
-    std::vector<sf::Vector2i> thisPossibleMoves = getPossibleMoves();
-    thisPossibleMoves = keepKingSafe(thisPossibleMoves);
+    Piece::Moveset thisPossibleMoves = getPossibleMoves();
+    keepKingSafe(thisPossibleMoves);
     for (sf::Vector2i &thisPossibleMove : thisPossibleMoves) {
         thisPossibleMove = thisPossibleMove + currentNode;
         if (isEnemy(thisPossibleMove)) ChessScreen::highlightTile(thisPossibleMove, enemyHighlight);
