@@ -1,5 +1,6 @@
 #include "ScreenManager.hpp"
 #include "ChessScreen.hpp"
+#include "MainMenu.hpp"
 
 std::string ScreenManager::currentScreen = "N/A";
 
@@ -10,7 +11,7 @@ const std::string ScreenManager::VALID_SCREEN_NAMES[] = {
 
 void ScreenManager::renderScreen() {
 	if (ScreenManager::currentScreen == "MenuScreen") {
-		
+		MainMenu::render(); 
 	}
 	else if (ScreenManager::currentScreen == "ChessScreen") {
 		ChessScreen::render();

@@ -1,6 +1,7 @@
 #include "Piece.hpp"  
 #include "Window.hpp"
 #include "ChessScreen.hpp"
+#include <math.h>
 
 /* ----------------- Static Definitions ------------------- */
 
@@ -44,8 +45,8 @@ Piece* Piece::getFromScreenPosition(sf::Vector2i screenPosition) {
 }
 
 sf::Vector2i Piece::getNodeFromScreenPosition(sf::Vector2i screenPosition) {
-    int row = 7 - std::floor(screenPosition.y / ChessScreen::getTileSilze().y);
-    int column = std::floor(screenPosition.x / ChessScreen::getTileSilze().x);
+    int row = 7 - floor(screenPosition.y / ChessScreen::getTileSilze().y);
+    int column = floor(screenPosition.x / ChessScreen::getTileSilze().x);
     return sf::Vector2i(column, row);
 }
 

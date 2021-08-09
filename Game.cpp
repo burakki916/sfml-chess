@@ -3,7 +3,7 @@
 #include "Window.hpp"
 #include "ChessScreen.hpp"
 #include "ScreenManager.hpp"
-
+#include "MainMenu.hpp"
 Piece *Game::selectedPiece = NULL;
 PieceColors Game::currentTurn = PieceColors::white;
 
@@ -11,13 +11,13 @@ void Game::initialize() {
 	Window::initialize();
 	ChessScreen::initialize();
 	Piece::initialize();
-
+	MainMenu::init(); 
 	Piece::newBoard();
 
 	EventManager::connectToEvent("ClickBoard", &onClick);
 	EventManager::bindInputToEvent("ClickBoard", sf::Event::MouseButtonPressed);
 
-	ScreenManager::setCurrentScreen("ChessScreen");
+	ScreenManager::setCurrentScreen("MenuScreen");
 }
 
 void Game::run() {
