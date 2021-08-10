@@ -20,6 +20,8 @@ class Game {
 		// Should hand control to other classes as much as possible.
 		static void render();
 
+		static void resetGame();
+
 		// Main click event
 		static void onClick(EventInfo* info);
 		static void onKeyPressed(EventInfo* info);

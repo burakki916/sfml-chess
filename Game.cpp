@@ -34,6 +34,13 @@ void Game::render() {
 	Window::endDraw();
 }
 
+void Game::resetGame() {
+	Game::selectedPiece = NULL;
+	ChessScreen::clearHighlightedTiles();
+	Game::currentTurn = PieceColors::white;
+	Piece::newBoard();
+}
+
 void Game::selectPiece(sf::Vector2i thisNode) {
 	Piece *clickedPiece = Piece::at(thisNode);
 
@@ -71,14 +78,14 @@ void Game::onClick(EventInfo *info) {
 			if (selectedButton == NULL) 
 				return;
 			else if (selectedButton->getName() == "SinglePlayer") {
-				Piece::newBoard();
+				resetGame();
 				ScreenManager::setCurrentScreen("ChessScreen");
 			}
 			else if (selectedButton->getName() == "Multiplayer") {
-				std::cout << "multi" << std::endl;
+				
 			}
 			else if (selectedButton->getName() == "Settings") {
-				std::cout << "settings" << std::endl;
+				
 			}
 		}
 	}
@@ -87,10 +94,10 @@ void Game::onClick(EventInfo *info) {
 void Game::onKeyPressed(EventInfo* info) {
 	if (ScreenManager::getCurrentScreen() == "ChessScreen") {
 		if (info->key.code == sf::Keyboard::Escape) {
-			//ScreenManager::setCurrentScreen("MenuScreen");
+			ScreenManager::setCurrentScreen("MenuScreen");
 		}
 		else if (info->key.code == sf::Keyboard::R) {
-			//Piece::newBoard();
+			resetGame();
 		}
 	}
 }
