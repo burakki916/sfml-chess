@@ -22,6 +22,7 @@ class Game {
 
 		// Main click event
 		static void onClick(EventInfo* info);
+		static void onKeyPressed(EventInfo* info);
 		// Select piece at node or deselect piece if empty
 		static void selectPiece(sf::Vector2i thisNode);
 

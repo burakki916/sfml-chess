@@ -4,6 +4,7 @@
 #include "ChessScreen.hpp"
 #include "ScreenManager.hpp"
 #include "MainMenu.hpp"
+
 Piece *Game::selectedPiece = NULL;
 PieceColors Game::currentTurn = PieceColors::white;
 
@@ -12,10 +13,12 @@ void Game::initialize() {
 	ChessScreen::initialize();
 	Piece::initialize();
 	MainMenu::init(); 
-	Piece::newBoard();
 
 	EventManager::connectToEvent("ClickBoard", &onClick);
 	EventManager::bindInputToEvent("ClickBoard", sf::Event::MouseButtonPressed);
+
+	EventManager::connectToEvent("KeyPressed", &onKeyPressed);
+	EventManager::bindInputToEvent("KeyPressed", sf::Event::KeyPressed);
 
 	ScreenManager::setCurrentScreen("MenuScreen");
 }
@@ -45,20 +48,50 @@ void Game::selectPiece(sf::Vector2i thisNode) {
 void Game::onClick(EventInfo *info) {
 	if (info->mouseButton.button == sf::Mouse::Left) {
 		int x = info->mouseButton.x, y = info->mouseButton.y;
-		sf::Vector2i thisNode = Piece::getNodeFromScreenPosition(sf::Vector2i(x, y));
-		ChessScreen::clearHighlightedTiles();
-
-		// If there is a selected piece and move of it is successful
-		if (Game::selectedPiece != NULL && Game::selectedPiece->attemptMove(thisNode)) {
-			Game::selectedPiece = NULL;
 			
-			if (Game::currentTurn == PieceColors::white) Game::currentTurn = PieceColors::black;
-			else Game::currentTurn = PieceColors::white;
+		if (ScreenManager::getCurrentScreen() == "ChessScreen") {
+			sf::Vector2i thisNode = Piece::getNodeFromScreenPosition(sf::Vector2i(x, y));
+			ChessScreen::clearHighlightedTiles();
 
-			if (Piece::isInCheckMate(currentTurn)) Game::onCheckMate();
-			else if (Piece::isInCheck(currentTurn)) Game::onCheck();
+			// If there is a selected piece and move of it is successful
+			if (Game::selectedPiece != NULL && Game::selectedPiece->attemptMove(thisNode)) {
+				Game::selectedPiece = NULL;
+
+				if (Game::currentTurn == PieceColors::white) Game::currentTurn = PieceColors::black;
+				else Game::currentTurn = PieceColors::white;
+
+				if (Piece::isInCheckMate(currentTurn)) Game::onCheckMate();
+				else if (Piece::isInCheck(currentTurn)) Game::onCheck();
+			}
+			else Game::selectPiece(thisNode);
 		}
-		else Game::selectPiece(thisNode);
+		else if (ScreenManager::getCurrentScreen() == "MenuScreen") {
+			MenuButton* selectedButton = MainMenu::clickedButton(sf::Vector2i(x, y));
+			
+			if (selectedButton == NULL) 
+				return;
+			else if (selectedButton->getName() == "SinglePlayer") {
+				Piece::newBoard();
+				ScreenManager::setCurrentScreen("ChessScreen");
+			}
+			else if (selectedButton->getName() == "Multiplayer") {
+				std::cout << "multi" << std::endl;
+			}
+			else if (selectedButton->getName() == "Settings") {
+				std::cout << "settings" << std::endl;
+			}
+		}
+	}
+}
+
+void Game::onKeyPressed(EventInfo* info) {
+	if (ScreenManager::getCurrentScreen() == "ChessScreen") {
+		if (info->key.code == sf::Keyboard::Escape) {
+			//ScreenManager::setCurrentScreen("MenuScreen");
+		}
+		else if (info->key.code == sf::Keyboard::R) {
+			//Piece::newBoard();
+		}
 	}
 }
 
