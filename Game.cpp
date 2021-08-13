@@ -4,6 +4,8 @@
 #include "ChessScreen.hpp"
 #include "ScreenManager.hpp"
 #include "MainMenu.hpp"
+#include "MenuButton.hpp"
+#include "MultiplayerMenu.hpp"
 
 Piece *Game::selectedPiece = NULL;
 PieceColors Game::currentTurn = PieceColors::white;
@@ -12,7 +14,9 @@ void Game::initialize() {
 	Window::initialize();
 	ChessScreen::initialize();
 	Piece::initialize();
-	MainMenu::init(); 
+	MenuButton::initialize();
+	MainMenu::initialize();
+	MultiplayerMenu::initialize();
 
 	EventManager::connectToEvent("ClickBoard", &onClick);
 	EventManager::bindInputToEvent("ClickBoard", sf::Event::MouseButtonPressed);
@@ -82,7 +86,7 @@ void Game::onClick(EventInfo *info) {
 				ScreenManager::setCurrentScreen("ChessScreen");
 			}
 			else if (selectedButton->getName() == "Multiplayer") {
-				
+				ScreenManager::setCurrentScreen("MultiplayerMenuScreen");
 			}
 			else if (selectedButton->getName() == "Settings") {
 				
@@ -98,6 +102,11 @@ void Game::onKeyPressed(EventInfo* info) {
 		}
 		else if (info->key.code == sf::Keyboard::R) {
 			resetGame();
+		}
+	}
+	else if (ScreenManager::getCurrentScreen() == "MultiplayerMenuScreen") {
+		if (info->key.code == sf::Keyboard::Escape) {
+			ScreenManager::setCurrentScreen("MenuScreen");
 		}
 	}
 }

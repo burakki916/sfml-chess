@@ -1,12 +1,14 @@
 #include "ScreenManager.hpp"
 #include "ChessScreen.hpp"
 #include "MainMenu.hpp"
+#include "MultiplayerMenu.hpp"
 
 std::string ScreenManager::currentScreen = "N/A";
 
 const std::string ScreenManager::VALID_SCREEN_NAMES[] = {
 	"ChessScreen",
-	"MenuScreen"
+	"MenuScreen",
+	"MultiplayerMenuScreen"
 };
 
 void ScreenManager::renderScreen() {
@@ -16,6 +18,9 @@ void ScreenManager::renderScreen() {
 	else if (ScreenManager::currentScreen == "ChessScreen") {
 		ChessScreen::render();
 		Piece::render(); 	
+	}
+	else if (ScreenManager::currentScreen == "MultiplayerMenuScreen") {
+		MultiplayerMenu::render();
 	}
 }
 

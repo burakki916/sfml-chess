@@ -1,10 +1,6 @@
 #include "MainMenu.hpp"
-#include <iostream>
 #include "ScreenManager.hpp"
 
-sf::Vector2f MenuButton::buttonDem;
-sf::Texture MenuButton::buttonTex;
-sf::Font MenuButton::buttonFont;
 std::vector<MenuButton*> MainMenu::buttons; 
 sf::Texture MainMenu::titleBarTexture;
 sf::RectangleShape MainMenu::titleBar;
@@ -13,8 +9,7 @@ MenuButton* MainMenu::singlePlayerButton;
 MenuButton* MainMenu::multiplayerButton;
 MenuButton* MainMenu::settingsButton;
 
-void MainMenu::init() {
-    MenuButton::initButtonsInfo();
+void MainMenu::initialize() {
     titleBarTexture.loadFromFile("resources/SFML-CHESS.png");
     
     titleBar.setTexture(&titleBarTexture);
@@ -33,7 +28,7 @@ void MainMenu::init() {
   
     settingsButton = new MenuButton("Settings", "Settings");
     settingsButton->setPosition(sf::Vector2f(Window::getSize().x/2,Window::getSize().y*0.50));
-    buttons.push_back(settingsButton);
+    //buttons.push_back(settingsButton);
 }
 
 void MainMenu::render() {
@@ -53,14 +48,4 @@ MenuButton* MainMenu::clickedButton(sf::Vector2i screenPosition) {
     }
 
     return NULL;
-}
-
-MainMenu::MainMenu()
-{
-
-}
-
-MainMenu::~MainMenu()
-{
-
 }

@@ -3,9 +3,7 @@
 
 #pragma once
 #include "Window.hpp"
-#include "MenuButton.cpp"
-#include <iostream>
-#include "EventManager.hpp"
+#include "MenuButton.hpp"
 
 class MainMenu  
 {
@@ -19,14 +17,10 @@ class MainMenu
 		static MenuButton* settingsButton;
 
 	public:
-		static void init(); 
+		static void initialize();
 		static void render();
-		static void update(); 
 
 		static MenuButton* clickedButton(sf::Vector2i screenPosition);
-
-		MainMenu();
-		~MainMenu();
 };
 
 #endif
