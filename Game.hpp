@@ -2,6 +2,11 @@
 #include "Piece.hpp"
 #include "EventManager.hpp"
 
+enum class GameType {
+	Multiplayer,
+	Singleplayer
+};
+
 class Game {
 	public:
 		// Perform any initializations. Called by main.
@@ -15,6 +20,8 @@ class Game {
 	private:
 		static Piece* selectedPiece;
 		static PieceColors currentTurn;
+		static GameType gameType;
+		static PieceColors myColor;
 
 		// Main rendering loop
 		// Should hand control to other classes as much as possible.
@@ -24,6 +31,8 @@ class Game {
 
 		// Main click event
 		static void onClick(EventInfo* info);
+		static void handleSinglePlayerClick(int x, int y);
+
 		static void onKeyPressed(EventInfo* info);
 		// Select piece at node or deselect piece if empty
 		static void selectPiece(sf::Vector2i thisNode);

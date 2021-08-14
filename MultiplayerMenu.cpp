@@ -23,7 +23,7 @@ void MultiplayerMenu::render() {
 }
 
 MenuButton* MultiplayerMenu::clickedButton(sf::Vector2i screenPosition) {
-    if (ScreenManager::getCurrentScreen() == "MenuScreen") {
+    if (ScreenManager::getCurrentScreen() == "MultiplayerMenuScreen") {
         for (auto thisButton : MultiplayerMenu::buttons) {
             if (thisButton->contains(screenPosition)) {
                 return thisButton;
