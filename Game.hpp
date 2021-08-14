@@ -4,14 +4,14 @@
 #include <SFML/Network.hpp>
 
 enum class GameType {
-	Multiplayer,
-	Singleplayer
+	multiplayer,
+	singleplayer
 };
 
 enum class ConnectionStatus {
-	None,
-	Waiting,
-	Connected
+	none,
+	waiting,
+	connected
 };
 
 class Game {
@@ -38,17 +38,25 @@ class Game {
 		// Main rendering loop
 		// Should hand control to other classes as much as possible.
 		static void render();
-
+		
+		// Check for connection updates each frame
 		static void runConnections();
+		static void listenForConnection();
+		static void receiveMovePacket();
 
 		static void resetGame();
 
 		// Main click event
 		static void onClick(EventInfo* info);
 		static void handleSinglePlayerClick(int x, int y);
-
-		static void broadcastMove(sf::Vector2i pieceAt, sf::Vector2i moveTo);
 		static void handleMultiplayerClick(int x, int y);
+
+		// Send info on my move to other player
+		static void sendMovePacket(sf::Vector2i pieceAt, sf::Vector2i moveTo);
+		// Setup host to listen for client
+		static void setupListener();
+		// Attempt to connect to host
+		static void attemptConnection();
 
 		static void onKeyPressed(EventInfo* info);
 		// Select piece at node or deselect piece if empty
